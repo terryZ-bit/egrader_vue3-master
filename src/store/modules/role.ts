@@ -20,9 +20,9 @@ export const useRoleStore = defineStore('role', {
       await listRole()
         .then((resp) => {
           // @ts-ignore
-          this.studentList = resp.data.studentList
+          this.studentList = resp.data.data.students
           // @ts-ignore
-          this.teacherList = resp.data.teacherList
+          this.teacherList = resp.data.data.teachers
           MessagePlugin.success('获取角色列表成功！')
         })
         .catch((err) => {

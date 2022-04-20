@@ -2,11 +2,19 @@
   <div id="ChooseRuleArea">
     <t-drawer
       v-model:visible="drawer_visible_right"
-      :close-btn="true"
+      :cancel-btn="{
+        content: '取消',
+        disable: rightDrawerBtnCancelAble,
+      }"
       header="创建课程"
       size="medium"
       placement="right"
       :size-draggable="true"
+      :on-confirm="onInsertCourse"
+      :confirm-btn="{
+        content: '提交',
+        loading: rightDrawerBtnLoading,
+      }"
     >
       <div class="drawer-new-role-inputs">
         <div>
@@ -15,7 +23,6 @@
             :data="drawer_new_course_form"
             :colon="true"
             @reset="onReset"
-            @submit="onInsertCourse"
           >
             <t-form-item label="课程名" name="course_name">
               <t-input
@@ -30,7 +37,60 @@
               >
               </t-textarea>
             </t-form-item>
+            <t-form-item label="教师">
+              <t-select>
+                <t-option
+                  v-for="item in teacherList"
+                  :key="item.email"
+                  :value="item.name"
+                ></t-option>
+              </t-select>
+            </t-form-item>
           </t-form>
+          <div v-if="teacherList === undefined" style="margin-top: 30px">
+            <t-tag style="margin-bottom: 30px"
+              >因为您还未创建过教师角色，请填写以下内容创建教师角色</t-tag
+            >
+            <t-form
+              ref="form"
+              :data="newTeacherForm"
+              :colon="true"
+              @reset="onReset"
+              @submit="onInsertTeacher"
+            >
+              <t-form-item label="教师名" name="name">
+                <t-input
+                  v-model="newTeacherForm.name"
+                  placeholder="请输入教师姓名"
+                ></t-input>
+              </t-form-item>
+              <t-form-item label="邮箱" name="email">
+                <t-input
+                  v-model="newTeacherForm.email"
+                  placeholder="请输入邮箱"
+                >
+                </t-input>
+              </t-form-item>
+              <t-form-item label="QQ" name="qq">
+                <t-input v-model="newTeacherForm.qq" placeholder="请输入QQ号">
+                </t-input>
+              </t-form-item>
+              <t-form-item label="电话" name="phone">
+                <t-input
+                  v-model="newTeacherForm.phone"
+                  placeholder="请输入电话"
+                >
+                </t-input>
+              </t-form-item>
+              <t-form-item label="个人介绍" name="teacher_introduction">
+                <t-textarea
+                  v-model="newTeacherForm.teacher_introduction"
+                  placeholder="请输入个人介绍"
+                >
+                </t-textarea>
+              </t-form-item>
+            </t-form>
+          </div>
         </div>
       </div>
     </t-drawer>
@@ -170,25 +230,66 @@ import { ref, watch } from 'vue'
 import { useRoleStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { MessagePlugin } from 'tdesign-vue-next'
+import { newTeacher } from '@/apis/role'
 const roleStore = useRoleStore()
-const { studentList } = storeToRefs(roleStore)
+const { studentList, teacherList } = storeToRefs(roleStore)
+const NEW_TEACHER_INIT = {
+  name: '',
+  email: '',
+  qq: '',
+  phone: '',
+  teacher_introduction: '',
+}
 const InitNewCourseForm = {
   teacher_id: '',
   course_name: '',
   course_introduction: '',
 }
+const rightDrawerBtnLoading = ref(false)
+const rightDrawerBtnCancelAble = ref(false)
 const newCourseForm = ref(InitNewCourseForm)
+const newTeacherForm = ref(NEW_TEACHER_INIT)
 watch(
   () => studentList.value,
   (newVal) => {
     console.log('watch studentList')
     if (newVal === undefined) {
-      MessagePlugin.info('还没有默认角色!')
+      MessagePlugin.info('还没有默认教师角色！')
+    }
+  },
+)
+watch(
+  () => studentList.value,
+  (newVal) => {
+    console.log('watch studentList')
+    if (newVal === undefined) {
+      MessagePlugin.info('还没有默认学生角色！')
     }
   },
 )
 const onInsertCourse = function () {
   console.log('1')
+  onNewTeacher()
+}
+const onNewTeacher = async function () {
+  rightDrawerBtnLoading.value = true
+  rightDrawerBtnCancelAble.value = true
+  await newTeacher(
+    newTeacherForm.value.name,
+    newTeacherForm.value.email,
+    newTeacherForm.value.phone,
+    newTeacherForm.value.qq,
+    newTeacherForm.value.teacher_introduction,
+  )
+    .then((resp) => {
+      roleStore.flashRoles()
+      MessagePlugin.success('添加教师角色成功！')
+    })
+    .catch((err) => {
+      MessagePlugin.error(err)
+    })
+  rightDrawerBtnLoading.value = false
+  rightDrawerBtnCancelAble.value = false
 }
 </script>
 
