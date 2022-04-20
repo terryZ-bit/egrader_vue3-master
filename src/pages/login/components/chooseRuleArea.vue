@@ -15,17 +15,17 @@
             :data="drawer_new_course_form"
             :colon="true"
             @reset="onReset"
-            @submit="onSubmit"
+            @submit="onInsertCourse"
           >
             <t-form-item label="课程名" name="course_name">
               <t-input
-                v-model="drawer_new_course_form.course_name"
+                v-model="newCourseForm.course_name"
                 placeholder="请输入课程名"
               ></t-input>
             </t-form-item>
             <t-form-item label="课程简介" name="course_introduction">
               <t-textarea
-                v-model="drawer_new_course_form.course_introduction"
+                v-model="newCourseForm.course_introduction"
                 placeholder="请输入课程简介"
               >
               </t-textarea>
@@ -166,20 +166,30 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import { watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoleStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { MessagePlugin } from 'tdesign-vue-next'
 const roleStore = useRoleStore()
 const { studentList } = storeToRefs(roleStore)
+const InitNewCourseForm = {
+  teacher_id: '',
+  course_name: '',
+  course_introduction: '',
+}
+const newCourseForm = ref(InitNewCourseForm)
 watch(
-  () => studentList,
+  () => studentList.value,
   (newVal) => {
-    if (newVal.value.length === 0) {
+    console.log('watch studentList')
+    if (newVal === undefined) {
       MessagePlugin.info('还没有默认角色!')
     }
   },
 )
+const onInsertCourse = function () {
+  console.log('1')
+}
 </script>
 
 <style scoped lang="less">
