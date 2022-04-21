@@ -1,12 +1,13 @@
 <template>
   <div id="ChooseRuleArea">
     <t-drawer
-      v-model:visible="drawer_visible_right"
+      v-model:visible="drawerVisibleRight"
       :cancel-btn="{
         content: '取消',
         disable: rightDrawerBtnCancelAble,
       }"
       header="创建课程"
+      reset-type="initial"
       size="medium"
       placement="right"
       :size-draggable="true"
@@ -19,7 +20,7 @@
       <div class="drawer-new-role-inputs">
         <div>
           <t-form
-            ref="form"
+            ref="newCourseForm"
             :data="drawer_new_course_form"
             :colon="true"
             @reset="onReset"
@@ -41,10 +42,11 @@
               <t-select v-model="teacherIdSelect">
                 <t-option
                   v-for="item in teacherList"
-                  :key="item.email"
-                  v-model="item.id"
-                  :value="item.name"
-                ></t-option>
+                  :key="item.id"
+                  :value="item.id"
+                  :label="item.name"
+                  >{{ item.name }}</t-option
+                >
               </t-select>
             </t-form-item>
           </t-form>
@@ -96,7 +98,7 @@
       </div>
     </t-drawer>
     <t-drawer
-      v-model:visible="drawer_visible_left"
+      v-model:visible="drawerVisibleLeft"
       :cancel-btn="{
         content: '取消',
         disable: leftDrawerBtnCancelAble,
@@ -171,19 +173,19 @@
                 我加入的课程
               </p>
             </div>
-            <div v-for="stu in student_list" :key="stu.id">
+            <div v-for="stu in inCourseList" :key="stu.id">
               <t-button
                 theme="default"
                 variant="outline"
                 style="width: 80%; margin-top: 30px"
                 @click="roleLogin(stu)"
-                >{{ stu.name }}</t-button
+                >{{ stu.course_name }}</t-button
               >
             </div>
             <div>
               <t-button
                 style="width: 80%; margin-top: 30px"
-                @click="drawer_visible_left = true"
+                @click="drawerVisibleLeft = true"
               >
                 <t-icon name="arrow-right"></t-icon>
                 加入课程</t-button
@@ -196,19 +198,19 @@
                 我管理的课程
               </p>
             </div>
-            <div v-for="teacher in teacher_list" :key="teacher.id">
+            <div v-for="teacher in createCourseList" :key="teacher.id">
               <t-button
                 theme="default"
                 variant="outline"
                 style="width: 80%; margin-top: 30px"
                 @click="roleLogin(teacher)"
-                >{{ teacher.name }}</t-button
+                >{{ teacher.course_name }}</t-button
               >
             </div>
             <div>
               <t-button
                 style="width: 80%; margin-top: 30px"
-                @click="drawer_visible_right = true"
+                @click="drawerVisibleRight = true"
               >
                 <t-icon name="add" />
                 新建课程</t-button
@@ -226,19 +228,6 @@ export default {
   name: 'ChooseRuleArea',
   data() {
     return {
-      student_list: [
-        { id: 1, name: '课程1' },
-        { id: 2, name: '课程2' },
-        { id: 3, name: '课程3' },
-        { id: 4, name: '课程4' },
-      ],
-      teacher_list: [
-        { id: 1, name: '课程1' },
-        { id: 2, name: '课程2' },
-        { id: 3, name: '课程3' },
-      ],
-      drawer_visible_left: false,
-      drawer_visible_right: false,
       drawer_type: '',
       drawer_place: 'right',
       drawer_new_course_form: {
@@ -248,9 +237,6 @@ export default {
     }
   },
   methods: {
-    roleLogin(role) {
-      this.$router.push('/base')
-    },
     newRole() {
       this.drawer_visible = false
     },
@@ -262,13 +248,20 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { useRoleStore } from '@/store'
+import { useRoleStore, useCourseStore, useChooseStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { newStudent, newTeacher } from '@/apis/role'
 import { createCourse } from '@/apis/course'
 const roleStore = useRoleStore()
+const courseStore = useCourseStore()
 const { studentList, teacherList } = storeToRefs(roleStore)
+// eslint-disable-next-line no-unused-vars
+const { createCourseList, inCourseList, tutorCourseList } =
+  storeToRefs(courseStore)
+const chooseStore = useChooseStore()
+// eslint-disable-next-line no-unused-vars
+const { chooseCourse, chooseClass, chooseRole } = storeToRefs(chooseStore)
 const NEW_TEACHER_INIT = {
   name: '',
   email: '',
@@ -290,6 +283,8 @@ const rightDrawerBtnLoading = ref(false)
 const leftDrawerBtnCancelAble = ref(false)
 const rightDrawerBtnCancelAble = ref(false)
 const leftDrawerBtnLoading = ref(false)
+const drawerVisibleLeft = ref(false)
+const drawerVisibleRight = ref(false)
 const newCourseForm = ref(InitNewCourseForm)
 const newTeacherForm = ref(NEW_TEACHER_INIT)
 const newStudentForm = ref(NEW_STUDENT_INIT)
@@ -313,6 +308,8 @@ watch(
   },
 )
 const onInsertCourse = async function () {
+  rightDrawerBtnLoading.value = true
+  rightDrawerBtnCancelAble.value = true
   console.log('1')
   if (teacherList === undefined) {
     await onNewTeacher()
@@ -329,6 +326,8 @@ const onInsertCourse = async function () {
       MessagePlugin.error('创建课程失败!')
       console.log(err)
     })
+  rightDrawerBtnLoading.value = false
+  rightDrawerBtnCancelAble.value = false
 }
 const onNewTeacher = async function () {
   rightDrawerBtnLoading.value = true
@@ -367,6 +366,14 @@ const onJoinCourse = async function () {
     })
   leftDrawerBtnLoading.value = false
   leftDrawerBtnCancelAble.value = false
+  drawerVisibleRight.value = false
+}
+const roleLogin = function (course) {
+  // eslint-disable-next-line no-prototype-builtins
+  // if (course.hasOwnProperty('teacher_id')) {
+  //
+  // } else {
+  // }
 }
 </script>
 

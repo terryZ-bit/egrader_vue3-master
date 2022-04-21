@@ -2,7 +2,7 @@ import { request } from '@/utils/request'
 
 export function listCourse() {
   return request({
-    url: 'login.LATEST/register/',
+    url: 'course.LATEST/refresh_course/',
     method: 'POST',
   })
 }

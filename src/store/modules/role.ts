@@ -23,6 +23,14 @@ export const useRoleStore = defineStore('role', {
           this.studentList = resp.data.data.students
           // @ts-ignore
           this.teacherList = resp.data.data.teachers
+          // @ts-ignore
+          if (resp.data.data.students.length === 0) {
+            this.studentList = undefined
+          }
+          // @ts-ignore
+          if (resp.data.data.teachers.length === 0) {
+            this.teacherList = undefined
+          }
           MessagePlugin.success('获取角色列表成功！')
         })
         .catch((err) => {

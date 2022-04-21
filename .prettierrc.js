@@ -1,6 +1,6 @@
 module.exports = {
     // 超过80就换行
-    printWidth: 80,
+    printWidth: 120,
     // 不适用分号
     semi: false,
     // 使用单引号

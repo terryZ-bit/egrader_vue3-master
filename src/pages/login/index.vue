@@ -31,7 +31,7 @@ import LoginArea from '@/pages/login/components/loginArea.vue'
 import HomePageHeader from '@/components/header/HomePageHeader.vue'
 import ChooseRuleArea from '@/pages/login/components/chooseRuleArea.vue'
 import { watch } from 'vue'
-import { useRoleStore } from '@/store'
+import { useRoleStore, useCourseStore } from '@/store'
 interface Props {
   showHeader?: string
 }
@@ -39,11 +39,13 @@ const props = withDefaults(defineProps<Props>(), {
   showHeader: 'NotLogin',
 })
 const roleStore = useRoleStore()
+const courseStore = useCourseStore()
 watch(
   () => props.showHeader,
   (newVal) => {
     if (newVal === 'login') {
       roleStore.flashRoles()
+      courseStore.flashRoles()
     }
   },
 )

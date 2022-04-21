@@ -1,5 +1,5 @@
 <template>
-  <div id="index-aside">
+  <div id="stu-aside">
     <t-menu
       theme="light"
       value="dashboard"
@@ -24,19 +24,9 @@
 
 <script lang="ts">
 export default {
-  name: 'IndexAside',
+  name: 'StuAside',
 }
 </script>
-<script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useChooseStore } from '@/store'
+<script setup lang="ts"></script>
 
-const chooseStore = useChooseStore()
-// eslint-disable-next-line no-unused-vars
-const { chooseCourse, chooseClass, chooseRole } = storeToRefs(chooseStore)
-</script>
-
-<style scoped lang="less">
-#index-aside {
-}
-</style>
+<style scoped></style>
