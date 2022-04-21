@@ -38,10 +38,11 @@
               </t-textarea>
             </t-form-item>
             <t-form-item label="教师">
-              <t-select>
+              <t-select v-model="teacherIdSelect">
                 <t-option
                   v-for="item in teacherList"
                   :key="item.email"
+                  v-model="item.id"
                   :value="item.name"
                 ></t-option>
               </t-select>
@@ -96,11 +97,19 @@
     </t-drawer>
     <t-drawer
       v-model:visible="drawer_visible_left"
-      :close-btn="true"
+      :cancel-btn="{
+        content: '取消',
+        disable: leftDrawerBtnCancelAble,
+      }"
       header="加入课程"
       size="medium"
       placement="left"
       :size-draggable="true"
+      :confirm-btn="{
+        content: '提交',
+        loading: leftDrawerBtnLoading,
+      }"
+      :on-confirm="onJoinCourse"
     >
       <div class="drawer-new-role-inputs">
         <div>
@@ -115,6 +124,32 @@
           >
           <t-input placeholder="请输入姓名"></t-input>
         </div>
+      </div>
+      <div v-if="studentList.length === 0" style="margin-top: 30px">
+        <t-tag style="margin-bottom: 30px"
+          >因为您还未创建过学生角色，请填写以下内容创建学生角色</t-tag
+        >
+        <t-form
+          ref="form"
+          :data="newStudentForm"
+          :colon="true"
+          @reset="onReset"
+          @submit="onInsertStudent"
+        >
+          <t-form-item label="学生名" name="name">
+            <t-input
+              v-model="newStudentForm.name"
+              placeholder="请输入教师姓名"
+            ></t-input>
+          </t-form-item>
+          <t-form-item label="学号" name="student_number">
+            <t-input
+              v-model="newStudentForm.student_number"
+              placeholder="请输入学号"
+            >
+            </t-input>
+          </t-form-item>
+        </t-form>
       </div>
     </t-drawer>
     <t-layout style="height: 100%; width: 100%">
@@ -230,7 +265,8 @@ import { ref, watch } from 'vue'
 import { useRoleStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { MessagePlugin } from 'tdesign-vue-next'
-import { newTeacher } from '@/apis/role'
+import { newStudent, newTeacher } from '@/apis/role'
+import { createCourse } from '@/apis/course'
 const roleStore = useRoleStore()
 const { studentList, teacherList } = storeToRefs(roleStore)
 const NEW_TEACHER_INIT = {
@@ -239,6 +275,11 @@ const NEW_TEACHER_INIT = {
   qq: '',
   phone: '',
   teacher_introduction: '',
+  id: '',
+}
+const NEW_STUDENT_INIT = {
+  name: '',
+  student_number: '',
 }
 const InitNewCourseForm = {
   teacher_id: '',
@@ -246,9 +287,13 @@ const InitNewCourseForm = {
   course_introduction: '',
 }
 const rightDrawerBtnLoading = ref(false)
+const leftDrawerBtnCancelAble = ref(false)
 const rightDrawerBtnCancelAble = ref(false)
+const leftDrawerBtnLoading = ref(false)
 const newCourseForm = ref(InitNewCourseForm)
 const newTeacherForm = ref(NEW_TEACHER_INIT)
+const newStudentForm = ref(NEW_STUDENT_INIT)
+const teacherIdSelect = ref('')
 watch(
   () => studentList.value,
   (newVal) => {
@@ -267,9 +312,23 @@ watch(
     }
   },
 )
-const onInsertCourse = function () {
+const onInsertCourse = async function () {
   console.log('1')
-  onNewTeacher()
+  if (teacherList === undefined) {
+    await onNewTeacher()
+  }
+  await createCourse(
+    teacherIdSelect.value,
+    newCourseForm.value.course_name,
+    newCourseForm.value.course_introduction,
+  )
+    .then((resp) => {
+      MessagePlugin.success('创建课程成功')
+    })
+    .catch((err) => {
+      MessagePlugin.error('创建课程失败!')
+      console.log(err)
+    })
 }
 const onNewTeacher = async function () {
   rightDrawerBtnLoading.value = true
@@ -290,6 +349,24 @@ const onNewTeacher = async function () {
     })
   rightDrawerBtnLoading.value = false
   rightDrawerBtnCancelAble.value = false
+}
+const onJoinCourse = async function () {
+  leftDrawerBtnLoading.value = true
+  leftDrawerBtnCancelAble.value = true
+  await newStudent(
+    newStudentForm.value.name,
+    newStudentForm.value.student_number,
+  )
+    .then((resp) => {
+      roleStore.flashRoles()
+      MessagePlugin.success('添加学生角色成功!')
+    })
+    .catch((err) => {
+      console.log(err)
+      MessagePlugin.error('添加学生角色出错!')
+    })
+  leftDrawerBtnLoading.value = false
+  leftDrawerBtnCancelAble.value = false
 }
 </script>
 

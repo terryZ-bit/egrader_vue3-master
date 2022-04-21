@@ -4,8 +4,8 @@ import { listRole } from '@/apis/role'
 import { MessagePlugin } from 'tdesign-vue-next'
 export const useRoleStore = defineStore('role', {
   state: () => ({
-    studentList: [{ name: 'defult' }],
-    teacherList: [{ name: 'defult' }],
+    studentList: [],
+    teacherList: [],
   }),
   getters: {
     getStudentList: (state) => {
