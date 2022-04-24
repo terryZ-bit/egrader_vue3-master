@@ -289,7 +289,8 @@ const roleLogin = function (course) {
     const teacherId = course.teacher_id
     chooseStore.setCourse(course)
     chooseStore.setChooseRole(teacherId, 'teacher')
-    chooseStore.setClass(manageClassList.value)
+    console.log(course.id)
+    chooseStore.setClass(courseStore.getClassByCourse(course.id))
     // eslint-disable-next-line no-prototype-builtins
   } else if (course.hasOwnProperty('student_id')) {
     console.log('学生登录')

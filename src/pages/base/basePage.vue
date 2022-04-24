@@ -1,6 +1,6 @@
 <template>
   <div id="base-page">
-    <teacher-setup-base v-if="JSON.stringify(chooseClass) === '{}'"></teacher-setup-base>
+    <teacher-setup-base v-if="chooseClass.length === 0"></teacher-setup-base>
   </div>
 </template>
 

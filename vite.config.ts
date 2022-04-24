@@ -34,4 +34,15 @@ export default defineConfig({
     port: 12221,
     host: '0.0.0.0',
   },
+  css: {
+    modules: {
+      generateScopedName: '[name]__[local]__[hash:base64:5]',
+      hashPrefix: 'prefix',
+    },
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      }
+    }
+  }
 })

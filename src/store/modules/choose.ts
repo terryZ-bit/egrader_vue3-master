@@ -6,8 +6,9 @@ export const useChooseStore = defineStore('choose', {
     chooseCourse: {
       id: '',
       create_time: '',
+      course_name: '',
     },
-    chooseClass: {},
+    chooseClass: [],
     chooseRole: {
       roleId: '',
       roleType: '',

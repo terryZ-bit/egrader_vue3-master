@@ -38,12 +38,14 @@ export const useCourseStore = defineStore('course', {
         })
     },
     getClassByCourse(courseId) {
+      var classList = []
       this.manageClassList.forEach(function (item) {
+        console.log(item.course_id)
         if (item.course_id === courseId) {
-          return item
+          classList.push(item)
         }
       })
-      return {}
+      return classList
     },
   },
 })
