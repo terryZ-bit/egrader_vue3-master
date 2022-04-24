@@ -38,7 +38,7 @@ export const useCourseStore = defineStore('course', {
         })
     },
     getClassByCourse(courseId) {
-      var classList = []
+      const classList = []
       this.manageClassList.forEach(function (item) {
         console.log(item.course_id)
         if (item.course_id === courseId) {

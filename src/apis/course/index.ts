@@ -34,3 +34,13 @@ export function createClass(courseId, className, classIntroduction) {
     },
   })
 }
+
+export function deleteClassByID(classId) {
+  return request({
+    url: 'course.LATEST/delete_class/',
+    method: 'POST',
+    data: {
+      class_t_id: classId,
+    },
+  })
+}

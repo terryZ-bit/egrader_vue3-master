@@ -1,6 +1,8 @@
 import { store } from '@/store'
 import { defineStore } from '_pinia@2.0.13@pinia'
 import { sessionStorage } from '@/utils/storage'
+import { listCourse } from '@/apis/course'
+import { MessagePlugin } from 'tdesign-vue-next'
 export const useChooseStore = defineStore('choose', {
   state: () => ({
     chooseCourse: {
@@ -37,6 +39,19 @@ export const useChooseStore = defineStore('choose', {
       sessionStorage.remove('chooseCourse')
       sessionStorage.remove('chooseClass')
       sessionStorage.remove('chooseRole')
+    },
+    async flushChooseClass() {
+      await listCourse().then((resp) => {
+        // @ts-ignore
+        const classList = resp.data.data.classList
+        this.chooseClass = []
+        classList.forEach((class_) => {
+          if (class_.course_id === this.chooseCourse.id) {
+            this.chooseClass.push(class_)
+          }
+        })
+        MessagePlugin.success('刷新班级列表成功！')
+      })
     },
   },
 })

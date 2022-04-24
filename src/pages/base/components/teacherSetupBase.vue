@@ -2,7 +2,7 @@
   <div id="teacher-setup-base" style="margin: 30px 30px">
     <t-card title="新建班级" subtitle="因为您选择的课程还没有创建班级，请先创建班级" header-bordered bordered>
       <div class="card-form-loop">
-        <t-form v-for="index in newClassList" :key="index.class_name" @submit="newClassSubmit">
+        <t-form v-for="index in newClassList" :key="index.id" @submit="newClassSubmit">
           <t-form-item label="班级名称">
             <t-input v-model="index.class_name"></t-input>
           </t-form-item>
@@ -43,7 +43,6 @@ import { MessagePlugin } from 'tdesign-vue-next'
 const chooseStore = useChooseStore()
 const courseStore = useCourseStore()
 const { chooseCourse } = storeToRefs(chooseStore)
-const { manageClassList } = storeToRefs(courseStore)
 const INIT_CLASS_FORM = {
   course_id: '',
   class_name: '',
@@ -65,7 +64,7 @@ const newClassSubmit = async function () {
       })
   }
   await courseStore.flashRoles()
-  chooseStore.setClass(manageClassList.value)
+  await chooseStore.flushChooseClass()
 }
 const pushNewClassList = function () {
   newClassList.value.push({ course_id: '', class_name: '', class_introduction: '' })
