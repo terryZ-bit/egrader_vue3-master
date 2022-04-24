@@ -2,14 +2,7 @@
   <div id="login-area">
     <div class="login-form" style="margin-top: 60px">
       <p
-        style="
-          display: block;
-          width: 100%;
-          text-align: left;
-          font-size: x-large;
-          font-weight: bold;
-          margin-left: 10px;
-        "
+        style="display: block; width: 100%; text-align: left; font-size: x-large; font-weight: bold; margin-left: 10px"
       >
         欢迎回来！
       </p>
@@ -27,57 +20,28 @@
         请先
         <span style="color: #0052d9"> 登录 </span>
       </p>
-      <t-form
-        ref="form"
-        :data="formData"
-        :colon="true"
-        :label-width="0"
-        :rules="FORM_RULES"
-        @submit="onSubmit"
-      >
+      <t-form ref="form" :data="formData" :colon="true" :label-width="0" :rules="FORM_RULES" @submit="onSubmit">
         <t-form-item name="account" style="margin: 10px 10px 20px">
-          <t-input
-            v-model="formData.account"
-            clearable
-            placeholder="请输入账户名"
-          >
+          <t-input v-model="formData.account" clearable placeholder="请输入账户名">
             <template #prefix-icon>
               <t-icon name="user" />
             </template>
           </t-input>
         </t-form-item>
         <t-form-item name="password" style="margin: 10px 10px 20px">
-          <t-input
-            v-model="formData.password"
-            type="password"
-            clearable
-            placeholder="请输入密码"
-          >
+          <t-input v-model="formData.password" type="password" clearable placeholder="请输入密码">
             <template #prefix-icon>
               <t-icon name="lock-on" />
             </template>
           </t-input>
         </t-form-item>
         <t-form-item style="padding-top: 8px; margin: 10px">
-          <t-button
-            theme="primary"
-            type="submit"
-            block
-            :loading="loginBtnLoading"
-            >登录</t-button
-          >
+          <t-button theme="primary" type="submit" block :loading="loginBtnLoading">登录</t-button>
         </t-form-item>
       </t-form>
       <div class="sign-in-check-area">
-        <t-button theme="primary" variant="text" @click="pushToEnroll('enroll')"
-          >注册</t-button
-        >
-        <t-button
-          theme="primary"
-          variant="text"
-          @click="pushToEnroll('forgetPassword')"
-          >忘记密码？</t-button
-        >
+        <t-button theme="primary" variant="text" @click="pushToEnroll('enroll')">注册</t-button>
+        <t-button theme="primary" variant="text" @click="pushToEnroll('forgetPassword')">忘记密码？</t-button>
       </div>
     </div>
   </div>

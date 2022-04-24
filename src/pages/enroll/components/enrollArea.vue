@@ -40,7 +40,7 @@
           label="确认密码"
         >
           <t-input
-            v-model="formData.password_confirmed"
+            v-model="formData.passwordConfirmed"
             type="password"
             clearable
             placeholder="请再次输入密码"
@@ -49,7 +49,7 @@
         </t-form-item>
         <t-form-item name="verify_code" class="enroll-form-item" label="验证码">
           <t-input
-            v-model="formData.verify_code"
+            v-model="formData.verifyCode"
             clearable
             placeholder="请输入验证码"
           >

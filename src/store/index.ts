@@ -12,5 +12,6 @@ export * from './modules/notification'
 export * from './modules/role'
 export * from './modules/course'
 export * from './modules/choose'
+export * from './modules/style'
 
 export default store

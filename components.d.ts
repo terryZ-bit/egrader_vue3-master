@@ -13,6 +13,7 @@ declare module '@vue/runtime-core' {
     TAside: typeof import('tdesign-vue-next')['Aside']
     TBadge: typeof import('tdesign-vue-next')['Badge']
     TButton: typeof import('tdesign-vue-next')['Button']
+    TCard: typeof import('tdesign-vue-next')['Card']
     TContent: typeof import('tdesign-vue-next')['Content']
     TDrawer: typeof import('tdesign-vue-next')['Drawer']
     TDropdown: typeof import('tdesign-vue-next')['Dropdown']
@@ -33,6 +34,7 @@ declare module '@vue/runtime-core' {
     TOption: typeof import('tdesign-vue-next')['Option']
     TPopup: typeof import('tdesign-vue-next')['Popup']
     TSelect: typeof import('tdesign-vue-next')['Select']
+    TSubmenu: typeof import('tdesign-vue-next')['Submenu']
     TTag: typeof import('tdesign-vue-next')['Tag']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
   }

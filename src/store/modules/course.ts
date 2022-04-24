@@ -7,6 +7,7 @@ export const useCourseStore = defineStore('course', {
     createCourseList: [],
     inCourseList: [],
     tutorCourseList: [],
+    manageClassList: [JSON],
   }),
   getters: {
     getStudentList: (state) => {
@@ -14,6 +15,9 @@ export const useCourseStore = defineStore('course', {
     },
     getTeacherList: (state) => {
       return state.inCourseList
+    },
+    getClassList: (state) => {
+      return state.manageClassList
     },
   },
   actions: {
@@ -24,12 +28,22 @@ export const useCourseStore = defineStore('course', {
           this.createCourseList = resp.data.data.course_t
           // @ts-ignore
           this.inCourseList = resp.data.data.choose_class_t
+          // @ts-ignore
+          this.manageClassList = resp.data.data.class_t
           MessagePlugin.success('刷新课程列表成功！')
         })
         .catch((err) => {
           MessagePlugin.error('刷新课程列表失败！')
           console.log(err)
         })
+    },
+    getClassByCourse(courseId) {
+      this.manageClassList.forEach(function (item) {
+        if (item.course_id === courseId) {
+          return item
+        }
+      })
+      return {}
     },
   },
 })

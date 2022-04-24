@@ -1,13 +1,43 @@
 import { store } from '@/store'
 import { defineStore } from '_pinia@2.0.13@pinia'
-export const useChooseStore = defineStore('course', {
+import { sessionStorage } from '@/utils/storage'
+export const useChooseStore = defineStore('choose', {
   state: () => ({
-    chooseCourse: JSON,
-    chooseClass: JSON,
-    chooseRole: JSON,
+    chooseCourse: {
+      id: '',
+      create_time: '',
+    },
+    chooseClass: {},
+    chooseRole: {
+      roleId: '',
+      roleType: '',
+    },
   }),
   getters: {},
-  actions: {},
+  actions: {
+    setChooseRole(roleId, roleType) {
+      this.chooseRole = { roleId: roleId, roleType: roleType }
+    },
+    setCourse(course) {
+      this.chooseCourse = course
+    },
+    setClass(classInfo) {
+      this.chooseClass = classInfo
+    },
+    toSessionStorage() {
+      sessionStorage.set('chooseCourse', this.chooseCourse)
+      sessionStorage.set('chooseClass', this.chooseClass)
+      sessionStorage.set('chooseRole', this.chooseRole)
+    },
+    fromSessionStorage() {
+      this.chooseCourse = sessionStorage.get('chooseCourse')
+      this.chooseClass = sessionStorage.get('chooseClass')
+      this.chooseRole = sessionStorage.get('chooseRole')
+      sessionStorage.remove('chooseCourse')
+      sessionStorage.remove('chooseClass')
+      sessionStorage.remove('chooseRole')
+    },
+  },
 })
 
 export function getChooseStore() {

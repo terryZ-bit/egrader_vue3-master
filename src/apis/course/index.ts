@@ -22,3 +22,15 @@ export function createCourse(teacher_id, course_name, course_introduction) {
     },
   })
 }
+
+export function createClass(courseId, className, classIntroduction) {
+  return request({
+    url: 'course.LATEST/create_class/',
+    method: 'POST',
+    data: {
+      course_id: courseId,
+      class_name: className,
+      class_introduction: classIntroduction,
+    },
+  })
+}
