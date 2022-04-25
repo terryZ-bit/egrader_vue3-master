@@ -9,8 +9,9 @@ export const useChooseStore = defineStore('choose', {
       id: '',
       create_time: '',
       course_name: '',
+      course_introduction: '',
     },
-    chooseClass: [],
+    chooseClass: Array,
     chooseRole: {
       roleId: '',
       roleType: '',
@@ -41,16 +42,17 @@ export const useChooseStore = defineStore('choose', {
       sessionStorage.remove('chooseRole')
     },
     async flushChooseClass() {
-      await listCourse().then((resp) => {
+      await listCourse().then(async (resp) => {
         // @ts-ignore
-        const classList = resp.data.data.classList
+        const classList = resp.data.data.class_t
         this.chooseClass = []
         classList.forEach((class_) => {
+          console.log(class_)
           if (class_.course_id === this.chooseCourse.id) {
             this.chooseClass.push(class_)
           }
         })
-        MessagePlugin.success('刷新班级列表成功！')
+        await MessagePlugin.success('刷新班级列表成功！')
       })
     },
   },

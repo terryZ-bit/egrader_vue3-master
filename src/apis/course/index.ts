@@ -44,3 +44,14 @@ export function deleteClassByID(classId) {
     },
   })
 }
+
+export function joinClass(classCode, studentId) {
+  return request({
+    url: 'course.LATEST/join_class/',
+    method: 'POST',
+    data: {
+      class_code: classCode,
+      student_id: studentId,
+    },
+  })
+}

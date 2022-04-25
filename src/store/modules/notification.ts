@@ -22,8 +22,7 @@ const msgData = [
   },
   {
     id: '125',
-    content:
-      '2021-01-01 10:00的【国家电网线下签约】会议即将开始，请提前10分钟前往 会议室1 进行签到！',
+    content: '2021-01-01 10:00的【国家电网线下签约】会议即将开始，请提前10分钟前往 会议室1 进行签到！',
     type: '会议通知',
     status: true,
     collected: false,
@@ -66,10 +65,8 @@ export const useNotificationStore = defineStore('notification', {
     msgData,
   }),
   getters: {
-    unreadMsg: (state) =>
-      state.msgData.filter((item: NotificationItem) => item.status),
-    readMsg: (state) =>
-      state.msgData.filter((item: NotificationItem) => !item.status),
+    unreadMsg: (state) => state.msgData.filter((item: NotificationItem) => item.status),
+    readMsg: (state) => state.msgData.filter((item: NotificationItem) => !item.status),
   },
   actions: {
     setMsgData(data: MsgDataType) {

@@ -63,7 +63,7 @@ const newClassSubmit = async function () {
         console.log(error)
       })
   }
-  await courseStore.flashRoles()
+  await courseStore.flashCourse()
   await chooseStore.flushChooseClass()
 }
 const pushNewClassList = function () {

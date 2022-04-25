@@ -12,5 +12,10 @@ export default [
     name: 'teacherCourse',
     component: () => import('@/pages/course/TeacherCourse.vue'),
   },
+  {
+    path: 'teacherNoticePage',
+    name: 'teacherNoticePage',
+    component: () => import('@/pages/notice/TeacherNoticePage.vue'),
+  },
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]

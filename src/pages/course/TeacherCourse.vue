@@ -74,14 +74,14 @@ const deleteClassDialog = function (row) {
 }
 
 const deleteClass = async function (row) {
-  deleteClassByID(row.id)
+  await deleteClassByID(row.id)
     .then(async () => {
       await MessagePlugin.success('删除成功！')
       await chooseStore.flushChooseClass()
     })
-    // eslint-disable-next-line node/handle-callback-err
-    .catch((err) => {
-      MessagePlugin.error('删除失败！')
+    .catch(async (err) => {
+      console.log(err)
+      await MessagePlugin.error('删除失败！')
       return false
     })
   return true

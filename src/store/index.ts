@@ -13,5 +13,6 @@ export * from './modules/role'
 export * from './modules/course'
 export * from './modules/choose'
 export * from './modules/style'
+export * from './modules/notice'
 
 export default store

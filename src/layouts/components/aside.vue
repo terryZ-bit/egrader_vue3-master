@@ -29,12 +29,14 @@
         <t-menu-item value="stuManage"> 学生管理 </t-menu-item>
       </t-submenu>
       <template #operations>
-        <t-icon
-          class="t-menu__operations-icon"
-          :name="iconName"
-          @click="changeCollapsed"
-        />
+        <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />
       </template>
+      <t-menu-item value="teacherNoticePage">
+        <template #icon>
+          <t-icon name="notification" />
+        </template>
+        通知
+      </t-menu-item>
       <t-menu-item value="userInfo">
         <template #icon>
           <t-icon name="user" />
@@ -63,9 +65,7 @@ const { chooseCourse, chooseClass, chooseRole } = storeToRefs(chooseStore)
 
 const collapsed = ref(false)
 
-const iconName = computed(() =>
-  collapsed.value ? 'chevron-right' : 'chevron-left',
-)
+const iconName = computed(() => (collapsed.value ? 'chevron-right' : 'chevron-left'))
 
 const changeCollapsed = () => {
   collapsed.value = !collapsed.value

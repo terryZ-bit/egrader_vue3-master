@@ -15,25 +15,11 @@
       :confirm-btn="{
         content: '提交',
         loading: rightDrawerBtnLoading,
+        disabled: teacherList === undefined,
       }"
     >
       <div class="drawer-new-role-inputs">
         <div>
-          <t-form ref="newCourseForm" :data="drawer_new_course_form" :colon="true" @reset="onReset">
-            <t-form-item label="课程名" name="course_name">
-              <t-input v-model="newCourseForm.course_name" placeholder="请输入课程名"></t-input>
-            </t-form-item>
-            <t-form-item label="课程简介" name="course_introduction">
-              <t-textarea v-model="newCourseForm.course_introduction" placeholder="请输入课程简介"> </t-textarea>
-            </t-form-item>
-            <t-form-item label="教师">
-              <t-select v-model="teacherIdSelect">
-                <t-option v-for="item in teacherList" :key="item.id" :value="item.id" :label="item.name">{{
-                  item.name
-                }}</t-option>
-              </t-select>
-            </t-form-item>
-          </t-form>
           <div v-if="teacherList === undefined" style="margin-top: 30px">
             <t-tag style="margin-bottom: 30px">因为您还未创建过教师角色，请填写以下内容创建教师角色</t-tag>
             <t-form ref="form" :data="newTeacherForm" :colon="true" @reset="onReset">
@@ -51,6 +37,24 @@
               </t-form-item>
               <t-form-item label="个人介绍" name="teacher_introduction">
                 <t-textarea v-model="newTeacherForm.teacher_introduction" placeholder="请输入个人介绍"> </t-textarea>
+              </t-form-item>
+              <t-button style="width: 200px" :loading="newTeacherLoading" @click="onNewTeacher">下一步</t-button>
+            </t-form>
+          </div>
+          <div v-else>
+            <t-form :data="newCourseForm" :colon="true" @reset="onReset">
+              <t-form-item label="课程名" name="course_name">
+                <t-input v-model="newCourseForm.course_name" placeholder="请输入课程名"></t-input>
+              </t-form-item>
+              <t-form-item label="课程简介" name="course_introduction">
+                <t-textarea v-model="newCourseForm.course_introduction" placeholder="请输入课程简介"> </t-textarea>
+              </t-form-item>
+              <t-form-item label="教师">
+                <t-select v-model="teacherIdSelect">
+                  <t-option v-for="item in teacherList" :key="item.id" :value="item.id" :label="item.name">{{
+                    item.name
+                  }}</t-option>
+                </t-select>
               </t-form-item>
             </t-form>
           </div>
@@ -70,25 +74,33 @@
       :confirm-btn="{
         content: '提交',
         loading: leftDrawerBtnLoading,
+        disabled: studentList === undefined,
       }"
       :on-confirm="onJoinCourse"
     >
       <div class="drawer-new-role-inputs">
-        <div>
-          <span style="text-align: left; float: left; margin-top: 10px; margin-bottom: 10px">姓名</span>
-          <t-input placeholder="请输入姓名"></t-input>
+        <div v-if="studentList === undefined" style="margin-top: 30px">
+          <t-tag style="margin-bottom: 30px">因为您还未创建过学生角色，请填写以下内容创建学生角色</t-tag>
+          <t-form ref="form" :data="newStudentForm" :colon="true" @reset="onReset">
+            <t-form-item label="学生名" name="name">
+              <t-input v-model="newStudentForm.name" placeholder="请输入学生姓名"></t-input>
+            </t-form-item>
+            <t-form-item label="学号" name="student_number">
+              <t-input v-model="newStudentForm.student_number" placeholder="请输入学号"> </t-input>
+            </t-form-item>
+            <t-button style="width: 200px" :loading="newStudentLoading" @click="onNewStudent()">下一步</t-button>
+          </t-form>
         </div>
-      </div>
-      <div v-if="studentList.length === 0" style="margin-top: 30px">
-        <t-tag style="margin-bottom: 30px">因为您还未创建过学生角色，请填写以下内容创建学生角色</t-tag>
-        <t-form ref="form" :data="newStudentForm" :colon="true" @reset="onReset">
-          <t-form-item label="学生名" name="name">
-            <t-input v-model="newStudentForm.name" placeholder="请输入教师姓名"></t-input>
-          </t-form-item>
-          <t-form-item label="学号" name="student_number">
-            <t-input v-model="newStudentForm.student_number" placeholder="请输入学号"> </t-input>
-          </t-form-item>
-        </t-form>
+        <div v-else>
+          <span style="text-align: left; float: left; margin-top: 10px; margin-bottom: 10px">课程码</span>
+          <t-input v-model="joinClassCode" placeholder="请输入课程码"></t-input>
+          <span style="text-align: left; float: left; margin-top: 10px; margin-bottom: 10px">选择学生角色</span>
+          <t-select v-model="studentIdSelect">
+            <t-option v-for="item in studentList" :key="item.id" :value="item.id" :label="item.name">{{
+              item.name
+            }}</t-option>
+          </t-select>
+        </div>
       </div>
     </t-drawer>
     <t-layout style="height: 100%; width: 100%">
@@ -146,16 +158,6 @@
 <script lang="ts">
 export default {
   name: 'ChooseRuleArea',
-  data() {
-    return {
-      drawer_type: '',
-      drawer_place: 'right',
-      drawer_new_course_form: {
-        course_name: '',
-        course_introduction: '',
-      },
-    }
-  },
   methods: {
     newRole() {
       this.drawer_visible = false
@@ -172,7 +174,7 @@ import { useRoleStore, useCourseStore, useChooseStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { newStudent, newTeacher } from '@/apis/role'
-import { createCourse } from '@/apis/course'
+import { createCourse, joinClass } from '@/apis/course'
 import { useRouter } from 'vue-router'
 const roleStore = useRoleStore()
 const courseStore = useCourseStore()
@@ -209,7 +211,11 @@ const newCourseForm = ref(InitNewCourseForm)
 const newTeacherForm = ref(NEW_TEACHER_INIT)
 const newStudentForm = ref(NEW_STUDENT_INIT)
 const teacherIdSelect = ref('')
+const studentIdSelect = ref('')
+const newStudentLoading = ref(false)
+const newTeacherLoading = ref(false)
 const router = useRouter()
+const joinClassCode = ref('')
 watch(
   () => studentList.value,
   (newVal) => {
@@ -236,19 +242,20 @@ const onInsertCourse = async function () {
     await onNewTeacher()
   }
   await createCourse(teacherIdSelect.value, newCourseForm.value.course_name, newCourseForm.value.course_introduction)
-    .then((resp) => {
-      MessagePlugin.success('创建课程成功')
+    .then(async (resp) => {
+      await MessagePlugin.success('创建课程成功')
+      courseStore.flashCourse()
     })
-    .catch((err) => {
-      MessagePlugin.error('创建课程失败!')
+    .catch(async (err) => {
+      await MessagePlugin.error('创建课程失败!')
       console.log(err)
     })
   rightDrawerBtnLoading.value = false
   rightDrawerBtnCancelAble.value = false
 }
 const onNewTeacher = async function () {
-  rightDrawerBtnLoading.value = true
   rightDrawerBtnCancelAble.value = true
+  newTeacherLoading.value = true
   await newTeacher(
     newTeacherForm.value.name,
     newTeacherForm.value.email,
@@ -256,31 +263,41 @@ const onNewTeacher = async function () {
     newTeacherForm.value.qq,
     newTeacherForm.value.teacher_introduction,
   )
-    .then((resp) => {
-      roleStore.flashRoles()
-      MessagePlugin.success('添加教师角色成功！')
+    .then(async (resp) => {
+      await roleStore.flashRoles()
+      await MessagePlugin.success('添加教师角色成功！')
     })
-    .catch((err) => {
-      MessagePlugin.error(err)
+    .catch(async (err) => {
+      await MessagePlugin.error(err)
     })
-  rightDrawerBtnLoading.value = false
-  rightDrawerBtnCancelAble.value = false
+  newTeacherLoading.value = false
 }
 const onJoinCourse = async function () {
   leftDrawerBtnLoading.value = true
   leftDrawerBtnCancelAble.value = true
-  await newStudent(newStudentForm.value.name, newStudentForm.value.student_number)
-    .then((resp) => {
-      roleStore.flashRoles()
-      MessagePlugin.success('添加学生角色成功!')
+  await joinClass(joinClassCode.value, studentIdSelect)
+    .then(async () => {
+      await MessagePlugin.success('加入班级成功')
     })
-    .catch((err) => {
-      console.log(err)
-      MessagePlugin.error('添加学生角色出错!')
+    .catch(async () => {
+      await MessagePlugin.error('加入班级失败！')
     })
   leftDrawerBtnLoading.value = false
   leftDrawerBtnCancelAble.value = false
   drawerVisibleRight.value = false
+}
+const onNewStudent = async function () {
+  newStudentLoading.value = true
+  await newStudent(newStudentForm.value.name, newStudentForm.value.student_number)
+    .then(async (resp) => {
+      await roleStore.flashRoles()
+      await MessagePlugin.success('添加学生角色成功!')
+    })
+    .catch(async (err) => {
+      console.log(err)
+      await MessagePlugin.error('添加学生角色出错!')
+    })
+  newStudentLoading.value = false
 }
 const roleLogin = function (course) {
   // eslint-disable-next-line no-prototype-builtins
@@ -290,7 +307,7 @@ const roleLogin = function (course) {
     chooseStore.setCourse(course)
     chooseStore.setChooseRole(teacherId, 'teacher')
     console.log(course.id)
-    chooseStore.setClass(courseStore.getClassByCourse(course.id))
+    chooseStore.flushChooseClass()
     // eslint-disable-next-line no-prototype-builtins
   } else if (course.hasOwnProperty('student_id')) {
     console.log('学生登录')

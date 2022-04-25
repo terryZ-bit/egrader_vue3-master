@@ -42,10 +42,10 @@ const roleStore = useRoleStore()
 const courseStore = useCourseStore()
 watch(
   () => props.showHeader,
-  (newVal) => {
+  async (newVal) => {
     if (newVal === 'login') {
-      roleStore.flashRoles()
-      courseStore.flashRoles()
+      await roleStore.flashRoles()
+      await courseStore.flashCourse()
     }
   },
 )

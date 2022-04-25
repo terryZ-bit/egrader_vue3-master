@@ -21,31 +21,30 @@ export const useCourseStore = defineStore('course', {
     },
   },
   actions: {
-    async flashRoles() {
+    async flashCourse() {
       await listCourse()
-        .then((resp) => {
+        .then(async (resp) => {
           // @ts-ignore
           this.createCourseList = resp.data.data.course_t
           // @ts-ignore
           this.inCourseList = resp.data.data.choose_class_t
           // @ts-ignore
           this.manageClassList = resp.data.data.class_t
-          MessagePlugin.success('刷新课程列表成功！')
+          await MessagePlugin.success('刷新课程列表成功！')
         })
-        .catch((err) => {
-          MessagePlugin.error('刷新课程列表失败！')
+        .catch(async (err) => {
+          await MessagePlugin.error('刷新课程列表失败！')
           console.log(err)
         })
     },
     getClassByCourse(courseId) {
       const classList = []
       this.manageClassList.forEach(function (item) {
-        console.log(item.course_id)
         if (item.course_id === courseId) {
           classList.push(item)
         }
       })
-      return classList
+      this.manageClassList = classList
     },
   },
 })
