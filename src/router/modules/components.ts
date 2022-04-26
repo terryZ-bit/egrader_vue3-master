@@ -17,5 +17,10 @@ export default [
     name: 'teacherNoticePage',
     component: () => import('@/pages/notice/TeacherNoticePage.vue'),
   },
+  {
+    path: 'teacherFolderManage',
+    name: 'teacherFolderManage',
+    component: () => import('@/pages/courseFolder/teacherFolderManage.vue'),
+  },
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]

@@ -17,7 +17,15 @@ export const useChooseStore = defineStore('choose', {
       roleType: '',
     },
   }),
-  getters: {},
+  getters: {
+    getChooseClassId() {
+      const idList = []
+      this.chooseClass.forEach((item) => {
+        idList.push(item.id)
+      })
+      return idList
+    },
+  },
   actions: {
     setChooseRole(roleId, roleType) {
       this.chooseRole = { roleId: roleId, roleType: roleType }

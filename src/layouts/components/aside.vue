@@ -15,7 +15,7 @@
         </template>
         工作台
       </t-menu-item>
-      <t-menu-item value="homework">
+      <t-menu-item value="teacherHomework">
         <template #icon>
           <t-icon name="books" />
         </template>
@@ -31,6 +31,12 @@
       <template #operations>
         <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />
       </template>
+      <t-menu-item value="teacherFolderManage">
+        <template #icon>
+          <t-icon name="folder-open" />
+        </template>
+        课程文档库
+      </t-menu-item>
       <t-menu-item value="teacherNoticePage">
         <template #icon>
           <t-icon name="notification" />
