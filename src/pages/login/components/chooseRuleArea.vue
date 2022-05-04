@@ -299,7 +299,7 @@ const onNewStudent = async function () {
     })
   newStudentLoading.value = false
 }
-const roleLogin = function (course) {
+const roleLogin = async function (course) {
   // eslint-disable-next-line no-prototype-builtins
   if (course.hasOwnProperty('teacher_id')) {
     console.log('教师登录')
@@ -307,14 +307,14 @@ const roleLogin = function (course) {
     chooseStore.setCourse(course)
     chooseStore.setChooseRole(teacherId, 'teacher')
     console.log(course.id)
-    chooseStore.flushChooseClass()
+    await chooseStore.flushChooseClass()
     // eslint-disable-next-line no-prototype-builtins
   } else if (course.hasOwnProperty('student_id')) {
     console.log('学生登录')
     chooseStore.setCourse(course)
     chooseStore.setChooseRole(course.student_id, 'student')
   }
-  router.push({ name: 'base' })
+  await router.push({ name: 'base' })
 }
 </script>
 

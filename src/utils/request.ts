@@ -6,8 +6,7 @@ import { start, close } from '@/utils/nprogress'
 export const request = (options: any) => {
   return new Promise((resolve, reject) => {
     const service = axios.create({
-      baseURL:
-        'https://1862232491914219.cn-chengdu.fc.aliyuncs.com/2016-08-15/proxy',
+      baseURL: 'https://1862232491914219.cn-chengdu.fc.aliyuncs.com/2016-08-15/proxy',
       timeout: 80000,
     })
 
@@ -32,9 +31,7 @@ export const request = (options: any) => {
     service.interceptors.response.use(
       (response) => {
         close()
-        console.log(response)
         const token = response.headers['e-token']
-        console.log(token)
         if (token) {
           storage.set('E-Token', token)
         }

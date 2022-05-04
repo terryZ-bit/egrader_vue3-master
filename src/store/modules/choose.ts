@@ -11,7 +11,7 @@ export const useChooseStore = defineStore('choose', {
       course_name: '',
       course_introduction: '',
     },
-    chooseClass: Array,
+    chooseClass: [],
     chooseRole: {
       roleId: '',
       roleType: '',

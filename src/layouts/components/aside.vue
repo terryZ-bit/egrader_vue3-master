@@ -49,6 +49,12 @@
         </template>
         个人中心
       </t-menu-item>
+      <t-menu-item @click="router.push({ name: 'chooseRole', params: { showHeader: 'login' } })">
+        <template #icon>
+          <t-icon name="logout"></t-icon>
+        </template>
+        返回课程列表
+      </t-menu-item>
     </t-menu>
   </div>
 </template>

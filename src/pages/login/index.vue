@@ -44,8 +44,8 @@ watch(
   () => props.showHeader,
   async (newVal) => {
     if (newVal === 'login') {
-      await roleStore.flashRoles()
-      await courseStore.flashCourse()
+      roleStore.flashRoles()
+      courseStore.flashCourse()
     }
   },
 )

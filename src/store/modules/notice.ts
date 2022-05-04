@@ -3,20 +3,29 @@ import { listNotice } from '@/apis/notice'
 
 export const useNoticeStore = defineStore('notice', {
   state: () => ({
-    noticeList: Array,
+    noticeList: [],
   }),
   actions: {
-    flushNoticeByClass(classIdList: Array<any>) {
-      classIdList.forEach((classId) => {
-        listNotice(classId)
-          .then((resp) => {
+    flushNoticeByClass(classIdList) {
+      this.clearNoticeList()
+      for (const classId of classIdList) {
+        listNotice(classId.id)
+          .then(async (resp) => {
             // @ts-ignore
-            this.noticeList.push(resp.data.data)
+            resp.data.data.forEach((item) => {
+              this.noticeList.push(item)
+            })
+            // @ts-ignore
+            console.log(resp.data.data)
           })
-          .catch((err) => {
+          .catch(async (err) => {
             console.log(err)
           })
-      })
+      }
+      console.log(this.noticeList)
+    },
+    clearNoticeList() {
+      this.noticeList.length = 0
     },
   },
 })

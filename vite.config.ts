@@ -11,14 +11,14 @@ export default defineConfig({
   plugins: [
       vue(),
       AutoImport({
-        resolvers: [TDesignResolver({
-          library: 'vue-next'
-        })],
+        resolvers: [
+          TDesignResolver({library: 'vue-next'}),
+        ],
       }),
       Components({
-        resolvers: [TDesignResolver({
-          library: 'vue-next'
-        })],
+        resolvers: [
+          TDesignResolver({library: 'vue-next'}),
+        ],
       }),
   ],
   resolve: {

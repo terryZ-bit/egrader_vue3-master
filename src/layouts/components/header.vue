@@ -6,12 +6,7 @@
           <img
             src="../../assets/logo/img.png"
             alt="404"
-            style="
-              height: 40px;
-              width: 120px;
-              margin-left: 30px;
-              margin-top: 20px;
-            "
+            style="height: 40px; width: 120px; margin-left: 30px; margin-top: 20px"
           />
         </span>
       </template>
@@ -25,16 +20,10 @@
           <t-dropdown :min-column-width="135" trigger="click">
             <template #dropdown>
               <t-dropdown-menu>
-                <t-dropdown-item
-                  class="operations-dropdown-container-item"
-                  @click="$router.push('/user/base')"
-                >
+                <t-dropdown-item class="operations-dropdown-container-item" @click="$router.push('/user/base')">
                   <t-icon name="user-circle"></t-icon>个人中心
                 </t-dropdown-item>
-                <t-dropdown-item
-                  class="operations-dropdown-container-item"
-                  @click="handleLogout"
-                >
+                <t-dropdown-item class="operations-dropdown-container-item" @click="handleLogout">
                   <t-icon name="poweroff"></t-icon>退出登录
                 </t-dropdown-item>
               </t-dropdown-menu>

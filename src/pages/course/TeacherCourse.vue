@@ -26,6 +26,38 @@
           </template>
         </vxe-column>
       </vxe-table>
+      <t-button style="margin-top: 20px" @click="dialogVisable = true">
+        <template #icon>
+          <t-icon name="add"></t-icon>
+        </template>
+        新增班级</t-button
+      >
+      <t-dialog
+        v-model:visible="dialogVisable"
+        header="新增班级"
+        mode="modal"
+        draggable="true"
+        :confirm-btn="{
+          content: '提交',
+          loading: dialogConfirmBtnLoading,
+        }"
+        :on-confirm="
+          () => {
+            newClass()
+          }
+        "
+      >
+        <template #body>
+          <t-form>
+            <t-form-item label="班级名称">
+              <t-input v-model="newClassForm.class_name" placeholder="请输入班级名称"></t-input>
+            </t-form-item>
+            <t-form-item label="班级名称">
+              <t-textarea v-model="newClassForm.class_introduction" placeholder="请输入班级介绍"></t-textarea>
+            </t-form-item>
+          </t-form>
+        </template>
+      </t-dialog>
     </t-card>
   </div>
 </template>
@@ -40,7 +72,7 @@ import { useChooseStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { VxeColumnPropTypes } from 'vxe-table'
 import XEUtils from 'xe-utils'
-import { deleteClassByID } from '@/apis/course'
+import { createClass, deleteClassByID } from '@/apis/course'
 import { DialogPlugin, MessagePlugin } from 'tdesign-vue-next'
 import { ref } from 'vue'
 
@@ -50,10 +82,17 @@ const formatTime: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
   return XEUtils.toDateString(cellValue, 'yyyy年MM月dd日 HH时ss分')
 }
 const formLoading = ref(false)
+const dialogConfirmBtnLoading = ref(false)
 const editClass = function (row) {
   console.log(row)
 }
-
+const INIT_CLASS_FORM = {
+  course_id: '',
+  class_name: '',
+  class_introduction: '',
+}
+const newClassForm = ref(INIT_CLASS_FORM)
+const dialogVisable = ref(false)
 const deleteClassDialog = function (row) {
   const confirmLoad = false
   const confirmDia = DialogPlugin({
@@ -85,6 +124,22 @@ const deleteClass = async function (row) {
       return false
     })
   return true
+}
+
+const newClass = async function () {
+  dialogConfirmBtnLoading.value = true
+  await createClass(chooseCourse.value.id, newClassForm.value.class_name, newClassForm.value.class_introduction)
+    .then((resp) => {
+      MessagePlugin.success('新建班级成功！')
+      console.log(resp)
+    })
+    .catch((error) => {
+      MessagePlugin.error('创建班级失败！')
+      console.log(error)
+    })
+  await chooseStore.flushChooseClass()
+  dialogVisable.value = false
+  dialogConfirmBtnLoading.value = false
 }
 </script>
 
