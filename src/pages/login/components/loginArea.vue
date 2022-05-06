@@ -105,7 +105,7 @@ const pushToEnroll = (showArea) => {
 <style scoped lang="less">
 #login-area {
   position: absolute;
-  height: 400px;
+  height: 460px;
   width: 300px;
   color: #2c3e50;
   background-color: rgba(255, 255, 255, 20%);

@@ -31,4 +31,8 @@ window.onbeforeunload = function () {
 #nprogress .bar {
   background: #0052d9 !important; //自定义颜色
 }
+body {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
 </style>

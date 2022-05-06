@@ -11,8 +11,8 @@
         </t-aside>
         <t-content>
           <router-view v-slot="{ Component }">
-            <transition>
-              <component :is="Component" />
+            <transition mode="out-in" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
+              <component :is="Component" v-if="showNav" style="animation-duration: 200ms" />
             </transition>
           </router-view>
         </t-content>
@@ -37,6 +37,7 @@ export default {
 import { storeToRefs } from 'pinia'
 import { getChooseStore, useStyleStore } from '@/store'
 import { ref, watch } from 'vue'
+import router from '@/router'
 
 const chooseStore = getChooseStore()
 const styleStore = useStyleStore()
@@ -44,17 +45,36 @@ const styleStore = useStyleStore()
 const { chooseCourse, chooseClass, chooseRole } = storeToRefs(chooseStore)
 const { asideWidth } = storeToRefs(styleStore)
 const asideWidthThisPage = ref('232px')
+const showNav = ref(true)
 watch(
   () => asideWidth.value,
   (newVal) => {
     asideWidthThisPage.value = newVal
   },
 )
+watch(
+  () => router.currentRoute.value.path,
+  (newValue, oldValue) => {
+    showNav.value = false
+    setTimeout(() => {
+      showNav.value = true
+    }, 200)
+  },
+  { immediate: true },
+)
 </script>
 
 <style scoped lang="less">
+@import 'animate.css';
 #index-main {
   height: 100%;
   width: 100%;
+  transition {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .fade-box-leave-to {
+    animation: bounceOutRight 0.8s;
+  }
 }
 </style>

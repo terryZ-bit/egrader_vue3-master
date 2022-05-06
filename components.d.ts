@@ -14,6 +14,7 @@ declare module '@vue/runtime-core' {
     TBadge: typeof import('tdesign-vue-next')['Badge']
     TButton: typeof import('tdesign-vue-next')['Button']
     TCard: typeof import('tdesign-vue-next')['Card']
+    TCheckbox: typeof import('tdesign-vue-next')['Checkbox']
     TCol: typeof import('tdesign-vue-next')['Col']
     TContent: typeof import('tdesign-vue-next')['Content']
     TDialog: typeof import('tdesign-vue-next')['Dialog']
@@ -29,6 +30,7 @@ declare module '@vue/runtime-core' {
     THeadMenu: typeof import('tdesign-vue-next')['HeadMenu']
     TIcon: typeof import('tdesign-vue-next')['Icon']
     TInput: typeof import('tdesign-vue-next')['Input']
+    TInputNumber: typeof import('tdesign-vue-next')['InputNumber']
     TLayout: typeof import('tdesign-vue-next')['Layout']
     TList: typeof import('tdesign-vue-next')['List']
     TListItem: typeof import('tdesign-vue-next')['ListItem']
@@ -41,10 +43,11 @@ declare module '@vue/runtime-core' {
     TRadioGroup: typeof import('tdesign-vue-next')['RadioGroup']
     TRow: typeof import('tdesign-vue-next')['Row']
     TSelect: typeof import('tdesign-vue-next')['Select']
+    TStepItem: typeof import('tdesign-vue-next')['StepItem']
+    TSteps: typeof import('tdesign-vue-next')['Steps']
     TSubmenu: typeof import('tdesign-vue-next')['Submenu']
     TTag: typeof import('tdesign-vue-next')['Tag']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
-    TUpload: typeof import('tdesign-vue-next')['Upload']
   }
 }
 

@@ -22,5 +22,10 @@ export default [
     name: 'teacherFolderManage',
     component: () => import('@/pages/courseFolder/teacherFolderManage.vue'),
   },
+  {
+    path: 'teacherNewHomework',
+    name: 'teacherNewHomework',
+    component: () => import('@/pages/homework/TeacherNewHomework.vue'),
+  }
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]

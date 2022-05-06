@@ -52,10 +52,10 @@
         <vxe-column field="notice_type" title="通知状态" :formatter="formatType"></vxe-column>
         <vxe-column title="操作" width="100px">
           <template #default="{ row }">
-            <t-button shape="circle" variant="text" @click="editClass(row)">
+            <t-button shape="circle" variant="text" @click="editNotice(row)">
               <t-icon name="edit" style="color: #002b9f"></t-icon>
             </t-button>
-            <t-button shape="circle" variant="text" @click="deleteClassDialog(row)">
+            <t-button shape="circle" variant="text" @click="deleteNoticeDialog(row)">
               <t-icon name="delete" style="color: red"></t-icon>
             </t-button>
           </template>
@@ -126,7 +126,8 @@ const getNoticeList = async function () {
   // @ts-ignore
   await noticeStore.flushNoticeByClass(chooseClass.value)
 }
-
+const editNotice = function (row) {}
+const deleteNoticeDialog = function (row) {}
 onMounted(() => {
   getNoticeList()
 })
