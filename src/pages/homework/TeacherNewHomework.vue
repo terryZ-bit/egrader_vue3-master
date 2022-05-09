@@ -25,20 +25,44 @@
         <div v-if="homeworkStep === 0" class="homework_main_input">
           <t-form colon label-align="left">
             <t-form-item label="作业标题">
-              <t-input placeholder="请输入作业标题"></t-input>
+              <t-input v-model="newHomeworkStepOneForm.name" placeholder="请输入作业标题"></t-input>
             </t-form-item>
             <t-form-item label="作业主要内容">
-              <t-textarea placeholder="请输入作业内容"></t-textarea>
+              <t-textarea
+                v-model="newHomeworkStepOneForm.homeworkIntroduction"
+                placeholder="请输入作业内容"
+              ></t-textarea>
             </t-form-item>
             <t-form-item label="作业总分">
-              <t-input-number theme="row" :min="0"></t-input-number>
+              <t-input-number v-model="newHomeworkStepOneForm.scoreMax" theme="row" :min="0"></t-input-number>
+            </t-form-item>
+            <t-form-item label="发布到班级">
+              <t-select v-model="selectClass" placeholder="请选择要发布到的班级" multiple>
+                <t-option
+                  v-for="item in chooseClass"
+                  :key="item.class_code"
+                  :value="item.id"
+                  :label="item.class_name"
+                ></t-option>
+              </t-select>
+            </t-form-item>
+            <t-form-item label="截止时间">
+              <t-date-picker
+                v-model="newHomeworkStepOneForm.endTime"
+                theme="primary"
+                mode="date"
+                format="YYYY-MM-DD HH:mm:ss"
+                enable-time-picker
+              ></t-date-picker>
             </t-form-item>
             <t-form-item>
-              <t-checkbox style="margin-right: 40px">进行学生间互评</t-checkbox>
-              <t-checkbox>稍后设置小分评定</t-checkbox>
+              <t-checkbox v-model="newHomeworkStepOneForm.rateEachFlag" style="margin-right: 40px" value="1"
+                >进行学生间互评</t-checkbox
+              >
+              <t-checkbox v-model="newHomeworkStepOneForm.scoreDetailFlag" value="1">稍后设置小分评定</t-checkbox>
             </t-form-item>
           </t-form>
-          <t-button @click="homeworkStep += 1">下一步</t-button>
+          <t-button @click="newHomeworkBody()">下一步</t-button>
         </div>
         <div v-else-if="homeworkStep === 1" class="homework_detail_input">
           <div v-for="item in newScoreDetailList" :key="item.question_id">
@@ -55,13 +79,13 @@
             </div>
             <t-form colon label-align="left">
               <t-form-item label="小题题目">
-                <t-input></t-input>
+                <t-input v-model="item.question_name"></t-input>
               </t-form-item>
               <t-form-item label="分数上限">
-                <t-input-number></t-input-number>
+                <t-input-number v-model="item.score_max"></t-input-number>
               </t-form-item>
               <t-form-item label="分数下限">
-                <t-input-number></t-input-number>
+                <t-input-number v-model="item.score_min"></t-input-number>
               </t-form-item>
             </t-form>
             <t-divider />
@@ -77,6 +101,21 @@
             <t-button @click="homeworkStep += 1">下一步</t-button>
           </div>
         </div>
+        <div
+          v-else-if="homeworkStep === 2"
+          style="display: flex; flex-direction: column; justify-content: center; align-items: center"
+        >
+          <t-upload
+            v-model="files_"
+            placeholder="支持批量上传文件，文件格式不限，最多只能上传 10 份文件"
+            theme="file-flow"
+            multiple
+            :auto-upload="false"
+            :max="10"
+            :request-method="filesUpLoad"
+          ></t-upload>
+          <t-button style="width: 200px; display: inline; margin-top: 20px">完成</t-button>
+        </div>
       </div>
     </t-card>
   </div>
@@ -89,34 +128,52 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useChooseStore } from '@/store'
+import { storeToRefs } from 'pinia'
 
+const chooseStore = useChooseStore()
+// eslint-disable-next-line no-unused-vars
+const { chooseCourse, chooseClass, chooseRole } = storeToRefs(chooseStore)
 const homeworkStep = ref(0)
+const files_ = ref([])
+const selectClass = ref([])
+const newHomeworkStepOneForm = ref({
+  name: '',
+  homeworkIntroduction: '',
+  scoreMax: 100,
+  scoreDetailFlag: false,
+  rateEachFlag: false,
+  endTime: '',
+})
 const newScoreDetailList = ref([
   {
     question_id: 1,
     question_name: '',
-    score_max: '',
-    score_min: '',
+    score_max: undefined,
+    score_min: undefined,
   },
 ])
 const pushNewDetail = function () {
   newScoreDetailList.value.push({
     question_id: newScoreDetailList.value.length + 1,
     question_name: '',
-    score_max: '',
-    score_min: '',
+    score_max: 9,
+    score_min: 0,
   })
 }
 const deleteDetailById = function (id) {
-  let newVal
-  // eslint-disable-next-line prefer-const
-  newVal = newScoreDetailList.value.filter((item) => {
-    return item.question_id === id
+  newScoreDetailList.value.forEach((item, index, array) => {
+    if (item.question_id === id) {
+      array.splice(index, 1)
+    }
   })
-  newVal.forEach((item, index, array) => {
+  newScoreDetailList.value.forEach((item, index) => {
     item.question_id = index + 1
   })
-  newScoreDetailList.value = newVal
+}
+
+const newHomeworkBody = function () {
+  console.log(newHomeworkStepOneForm, selectClass)
 }
 </script>
 

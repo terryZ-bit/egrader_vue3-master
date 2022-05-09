@@ -62,15 +62,7 @@ export function courseFileDownLoad(fileId, fileName) {
       })
       .then((res) => {
         // @ts-ignore
-        const blob = new Blob([resp.data])
-        const down = document.createElement('a')
-        down.download = fileName
-        down.style.display = 'none'
-        down.href = URL.createObjectURL(blob)
-        document.body.appendChild(down)
-        down.click()
-        URL.revokeObjectURL(down.href)
-        document.body.removeChild(down)
+        window.open(resp.data.data.url, '_blank')
       })
   })
 }

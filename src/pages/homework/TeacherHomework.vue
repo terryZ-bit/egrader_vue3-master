@@ -17,17 +17,17 @@
           <vxe-column title="操作" width="140px">
             <template #default="{ row }">
               <t-popup content="查看详情">
-                <t-button shape="circle" variant="text" @click="detailClass(row)">
+                <t-button shape="circle" variant="text" @click="detailHomework(row)">
                   <t-icon name="browse" style="color: #000000"></t-icon>
                 </t-button>
               </t-popup>
               <t-popup content="编辑">
-                <t-button shape="circle" variant="text" @click="editClass(row)">
+                <t-button shape="circle" variant="text" @click="editHomework(row)">
                   <t-icon name="edit" style="color: #002b9f"></t-icon>
                 </t-button>
               </t-popup>
               <t-popup content="删除">
-                <t-button shape="circle" variant="text" @click="deleteClassDialog(row)">
+                <t-button shape="circle" variant="text" @click="deleteHomework(row)">
                   <t-icon name="delete" style="color: red"></t-icon>
                 </t-button>
               </t-popup>
@@ -77,6 +77,9 @@ const formatYesOrNo: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
 const pushToNewHomework = function () {
   router.push({ name: 'teacherNewHomework' })
 }
+const detailHomework = function (row) {}
+const editHomework = function (row) {}
+const deleteHomework = function (row) {}
 </script>
 
 <style scoped></style>
