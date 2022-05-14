@@ -7,18 +7,19 @@ export function enroll(email, password, username, authCode) {
     data: {
       email: email,
       password: password,
-      username: username,
+      name: username,
       auth_code: authCode,
     },
   })
 }
 
-export function getVerificationCode(email) {
+export function getVerificationCode(email, sendType) {
   return request({
     url: 'login.LATEST/send-email/',
     method: 'POST',
     data: {
       email: email,
+      send_type: sendType,
     },
   })
 }

@@ -11,7 +11,7 @@ export function createHomeworkBody(
   classList,
 ) {
   return request({
-    url: 'homework.LATEST/create_homework',
+    url: 'homework.LATEST/create_homework/',
     method: 'POST',
     data: {
       teacher_id: teacherId,
@@ -22,6 +22,49 @@ export function createHomeworkBody(
       score_detail_flag: scoreDetailFlag,
       end_time: endTime,
       class_id_list: classList,
+    },
+  })
+}
+export function createHomeworkDetail(id, scoreList) {
+  return request({
+    url: 'homework.LATEST/create_homework_detail/',
+    method: 'POST',
+    data: {
+      id: id,
+      score_detail_list: scoreList,
+    },
+  })
+}
+
+export function getTeacherHomeworkOssPaths(teacherId, homeworkId, fileNameList) {
+  return request({
+    url: 'homework.LATEST/get_homework_path/',
+    method: 'POST',
+    data: {
+      teacher_id: teacherId,
+      homework_id: homeworkId,
+      file_name_list: fileNameList,
+    },
+  })
+}
+
+export function listTeacherHomework(courseId, teacherId) {
+  return request({
+    url: 'homework.LATEST/get_homeworks/',
+    method: 'POST',
+    data: {
+      course_id: courseId,
+      teacher_id: teacherId,
+    },
+  })
+}
+
+export function getTeacherHomeworkDetail(teacherHomeworkId) {
+  return request({
+    url: 'homework.LATEST/get_homework/',
+    method: 'POST',
+    data: {
+      homework_id: teacherHomeworkId,
     },
   })
 }

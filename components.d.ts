@@ -49,7 +49,6 @@ declare module '@vue/runtime-core' {
     TSubmenu: typeof import('tdesign-vue-next')['Submenu']
     TTag: typeof import('tdesign-vue-next')['Tag']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
-    TTimePicker: typeof import('tdesign-vue-next')['TimePicker']
     TUpload: typeof import('tdesign-vue-next')['Upload']
   }
 }

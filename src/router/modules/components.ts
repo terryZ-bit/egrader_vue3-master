@@ -26,6 +26,12 @@ export default [
     path: 'teacherNewHomework',
     name: 'teacherNewHomework',
     component: () => import('@/pages/homework/TeacherNewHomework.vue'),
-  }
+  },
+  {
+    path: 'teacherHomeworkDetail/:teacherHomeworkId',
+    name: 'teacherHomeworkDetail',
+    component: () => import('@/pages/homework/TeacherHomeworkDetail.vue'),
+    props: true,
+  },
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]
