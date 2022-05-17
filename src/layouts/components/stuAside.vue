@@ -1,11 +1,6 @@
 <template>
   <div id="stu-aside">
-    <t-menu
-      theme="light"
-      value="dashboard"
-      style="margin-right: 50px"
-      height="550px"
-    >
+    <t-menu theme="light" value="dashboard" style="margin-right: 50px" height="550px">
       <t-menu-item value="dashboard">
         <template #icon>
           <t-icon name="desktop" />

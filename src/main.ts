@@ -8,7 +8,6 @@ import './assets/defult.less'
 import 'tdesign-vue-next/es/style/index.css'
 import 'vxe-table/lib/style.css'
 import './style/index.less'
-import 'animate.css'
 // import 'echarts'
 // import VueECharts from 'vue-echarts'
 const app = createApp(App)

@@ -1,6 +1,121 @@
 <template>
-  <div class="teacher-homework-detail">
-    <t-card title="作业详情" style="margin: 30px" bordered header-bordered :shadow="true"></t-card>
+  <div id="teacher-homework-detail">
+    <t-card title="作业详情" style="margin: 30px" bordered header-bordered :shadow="true">
+      <div style="display: flex; flex-direction: column">
+        <div>
+          <t-button
+            theme="primary"
+            variant="text"
+            style="float: left; display: inline"
+            @click="$router.push({ name: 'teacherHomework' })"
+          >
+            <template #icon>
+              <t-icon name="rollback"></t-icon>
+            </template>
+            返回
+          </t-button>
+        </div>
+        <div class="teacher-homework-detail-area">
+          <t-divider></t-divider>
+          <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">作业主体</p>
+          <t-row>
+            <t-col span="6">
+              <div class="teacher-homework-detail-span-left">
+                <span>作业名称：</span>
+                <i>{{ teacherHomeworkDetail.name }}</i>
+              </div>
+            </t-col>
+            <t-col span="6">
+              <div class="teacher-homework-detail-span-left">
+                <span>分数上限：</span>
+                <i>{{ teacherHomeworkDetail.score_max }}</i>
+              </div>
+            </t-col>
+          </t-row>
+          <t-row>
+            <t-col span="6">
+              <div class="teacher-homework-detail-span-left">
+                <span>创建时间：</span>
+                <i>{{ XEUtils.toDateString(teacherHomeworkDetail.create_time, 'yyyy-MM-dd HH:ss') }}</i>
+              </div>
+            </t-col>
+            <t-col span="6">
+              <div class="teacher-homework-detail-span-left">
+                <span>截止时间：</span>
+                <i>{{ XEUtils.toDateString(teacherHomeworkDetail.end_time, 'yyyy-MM-dd HH:ss') }}</i>
+              </div>
+            </t-col>
+          </t-row>
+          <t-row>
+            <t-col span="6">
+              <div class="teacher-homework-detail-span-left">
+                <span>是否进行互评：</span>
+                <i>{{ teacherHomeworkDetail.rate_each_flag === 1 ? '是' : '否' }}</i>
+              </div>
+            </t-col>
+            <t-col span="6">
+              <div class="teacher-homework-detail-span-left">
+                <span>有无评分细则：</span>
+                <i>{{ teacherHomeworkDetail.score_detail_flag === 1 ? '有' : '无' }}</i>
+              </div>
+            </t-col>
+          </t-row>
+          <t-row>
+            <t-col span="12">
+              <div class="teacher-homework-detail-span-left">
+                <span>作业主要内容：</span>
+                <i>{{ teacherHomeworkDetail.homework_introduction }}</i>
+              </div>
+            </t-col>
+          </t-row>
+        </div>
+        <t-divider dashed />
+        <div style="display: flex; flex-direction: column">
+          <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">评分细则</p>
+          <vxe-table style="margin-left: 20px; margin-top: 20px" :data="teacherHomeworkDetail.score_detail">
+            <vxe-column type="seq" width="60" field="question_id"></vxe-column>
+            <vxe-column field="question_name" title="题目名称"></vxe-column>
+            <vxe-column field="score_max" title="分数上限"></vxe-column>
+            <vxe-column title="操作" width="90px">
+              <template #default="{ row }">
+                <t-popup content="编辑">
+                  <t-button shape="circle" variant="text" @click="editHomework(row)">
+                    <t-icon name="edit" style="color: #002b9f"></t-icon>
+                  </t-button>
+                </t-popup>
+                <t-popup content="删除">
+                  <t-button shape="circle" variant="text" @click="deleteHomework(row)">
+                    <t-icon name="delete" style="color: red"></t-icon>
+                  </t-button>
+                </t-popup>
+              </template>
+            </vxe-column>
+          </vxe-table>
+        </div>
+        <t-divider dashed />
+        <div style="display: flex; flex-direction: column">
+          <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">作业附件</p>
+          <vxe-table style="margin-left: 20px; margin-top: 20px" :data="teacherHomeworkDetail.oss_detail">
+            <vxe-column type="seq" width="60"></vxe-column>
+            <vxe-column field="oss_url" title="文件名称" :formatter="formatFileName"></vxe-column>
+            <vxe-column title="操作" width="90px">
+              <template #default="{ row }">
+                <t-popup content="下载">
+                  <t-button shape="circle" variant="text" @click="downloadTHomeworkFile(row)">
+                    <t-icon name="download" style="color: #002b9f"></t-icon>
+                  </t-button>
+                </t-popup>
+                <t-popup content="删除">
+                  <t-button shape="circle" variant="text" @click="deleteHomework(row)">
+                    <t-icon name="delete" style="color: red"></t-icon>
+                  </t-button>
+                </t-popup>
+              </template>
+            </vxe-column>
+          </vxe-table>
+        </div>
+      </div>
+    </t-card>
   </div>
 </template>
 
@@ -11,9 +126,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { getTeacherHomeworkDetail } from '@/apis/homework/teacherHomework'
+import XEUtils from '_xe-utils@3.5.4@xe-utils'
+import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
 
+const teacherHomeworkDetail = ref({})
 interface Props {
   teacherHomeworkId?: string
 }
@@ -22,15 +140,45 @@ const props = withDefaults(defineProps<Props>(), {
   teacherHomeworkId: '',
 })
 
+const formatFileName: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
+  const item = cellValue.lastIndexOf('/')
+  return cellValue.substring(item + 1, cellValue.length)
+}
+
 onMounted(() => {
   getTeacherHomeworkDetail(props.teacherHomeworkId)
     .then((resp) => {
       console.log(resp)
+      // @ts-ignore
+      teacherHomeworkDetail.value = resp.data.data
     })
     .catch((err) => {
       console.log(err)
     })
 })
+const downloadTHomeworkFile = function () {}
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+@import '../../style/variables';
+#teacher-homework-detail {
+  .teacher-homework-detail-area {
+    display: flex;
+    flex-direction: column;
+    span {
+      margin-left: 20px;
+      font-weight: normal;
+      color: @text-color-secondary;
+    }
+    .t-col {
+      margin-top: 20px;
+    }
+    .teacher-homework-detail-span-left {
+      float: left;
+      i {
+        border-radius: @border-radius-50;
+      }
+    }
+  }
+}
+</style>
