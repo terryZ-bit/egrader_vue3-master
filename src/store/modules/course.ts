@@ -1,7 +1,7 @@
 import { store } from '@/store'
-import { defineStore } from '_pinia@2.0.13@pinia'
 import { listCourse } from '@/apis/course'
 import { MessagePlugin } from 'tdesign-vue-next'
+import { defineStore } from 'pinia'
 export const useCourseStore = defineStore('course', {
   state: () => ({
     createCourseList: [],

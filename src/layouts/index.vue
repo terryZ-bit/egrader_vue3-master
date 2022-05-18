@@ -6,7 +6,7 @@
       </t-header>
       <t-layout>
         <t-aside :width="asideWidthThisPage">
-          <stu-aside v-if="chooseRole.roleType === 'stu'"></stu-aside>
+          <stu-aside v-if="chooseRole.roleType === 'student'"></stu-aside>
           <index-aside v-else></index-aside>
         </t-aside>
         <t-content>

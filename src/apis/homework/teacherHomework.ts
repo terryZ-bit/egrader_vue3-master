@@ -68,3 +68,31 @@ export function getTeacherHomeworkDetail(teacherHomeworkId) {
     },
   })
 }
+
+export function getTeacherHomeworkFile(fileId) {
+  request({
+    url: 'homework.LATEST/download_homework/',
+    method: 'POST',
+    data: {
+      id: fileId,
+      homework_type: 'Tch',
+    },
+  }).then((r) => {
+    // @ts-ignore
+    window.open(r.data.data.url, '_blank')
+  })
+}
+
+export function getStuHomeworkFile(fileId) {
+  request({
+    url: 'homework.LATEST/download_homework/',
+    method: 'POST',
+    data: {
+      id: fileId,
+      homework_type: 'Stu',
+    },
+  }).then((r) => {
+    // @ts-ignore
+    window.open(r.data.data.url, '_blank')
+  })
+}

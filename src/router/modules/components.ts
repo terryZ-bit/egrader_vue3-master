@@ -33,5 +33,10 @@ export default [
     component: () => import('@/pages/homework/TeacherHomeworkDetail.vue'),
     props: true,
   },
+  {
+    path: 'stuHomework',
+    name: 'stuHomework',
+    component: () => import('@/pages/homework/StuHomework.vue'),
+  }
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]

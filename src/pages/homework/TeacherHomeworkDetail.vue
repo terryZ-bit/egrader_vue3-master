@@ -1,6 +1,6 @@
 <template>
   <div id="teacher-homework-detail">
-    <t-card title="作业详情" style="margin: 30px" bordered header-bordered :shadow="true">
+    <t-card style="margin: 30px" bordered header-bordered :shadow="true">
       <div style="display: flex; flex-direction: column">
         <div>
           <t-button
@@ -15,6 +15,7 @@
             返回
           </t-button>
         </div>
+        <p style="margin-right: auto; padding-left: 20px; margin-top: 20px; font-size: x-large">作业详情</p>
         <div class="teacher-homework-detail-area">
           <t-divider></t-divider>
           <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">作业主体</p>
@@ -127,7 +128,7 @@ export default {
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { getTeacherHomeworkDetail } from '@/apis/homework/teacherHomework'
+import { getTeacherHomeworkDetail, getTeacherHomeworkFile } from '@/apis/homework/teacherHomework'
 import XEUtils from '_xe-utils@3.5.4@xe-utils'
 import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
 
@@ -156,7 +157,9 @@ onMounted(() => {
       console.log(err)
     })
 })
-const downloadTHomeworkFile = function () {}
+const downloadTHomeworkFile = function (row) {
+  getTeacherHomeworkFile(row.id)
+}
 </script>
 
 <style scoped lang="less">

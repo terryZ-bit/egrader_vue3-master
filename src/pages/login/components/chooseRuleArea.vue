@@ -119,7 +119,7 @@
                 variant="outline"
                 style="width: 80%; margin-top: 30px"
                 @click="roleLogin(stu)"
-                >{{ stu.course_name }}</t-button
+                >{{ stu.class_name }}</t-button
               >
             </div>
             <div>
@@ -275,7 +275,7 @@ const onNewTeacher = async function () {
 const onJoinCourse = async function () {
   leftDrawerBtnLoading.value = true
   leftDrawerBtnCancelAble.value = true
-  await joinClass(joinClassCode.value, studentIdSelect)
+  await joinClass(joinClassCode.value, studentIdSelect.value)
     .then(async () => {
       await MessagePlugin.success('加入班级成功')
     })
@@ -284,7 +284,8 @@ const onJoinCourse = async function () {
     })
   leftDrawerBtnLoading.value = false
   leftDrawerBtnCancelAble.value = false
-  drawerVisibleRight.value = false
+  drawerVisibleLeft.value = false
+  courseStore.flashCourse()
 }
 const onNewStudent = async function () {
   newStudentLoading.value = true

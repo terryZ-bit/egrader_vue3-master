@@ -1,4 +1,4 @@
-import { defineStore } from '_pinia@2.0.13@pinia'
+import { defineStore } from 'pinia'
 
 export const useTeacherHomeworkStore = defineStore('teacherHomework', {
   state: () => ({

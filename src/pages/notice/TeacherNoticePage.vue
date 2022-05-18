@@ -20,14 +20,7 @@
             <t-textarea v-model="newNoticeForm.notice_content"></t-textarea>
           </t-form-item>
           <t-form-item label="是否保存草稿">
-            <t-radio-group
-              default-value="0"
-              @change="
-                (e) => {
-                  newNoticeForm.notice_type === e
-                }
-              "
-            >
+            <t-radio-group v-model="newNoticeForm.notice_type">
               <t-radio value="0">是</t-radio>
               <t-radio value="1">否，直接发布</t-radio>
             </t-radio-group>
@@ -55,7 +48,7 @@
             <t-button shape="circle" variant="text" @click="editNotice(row)">
               <t-icon name="edit" style="color: #002b9f"></t-icon>
             </t-button>
-            <t-button shape="circle" variant="text" @click="deleteNoticeDialog(row)">
+            <t-button shape="circle" variant="text" @click="deleteNotice(row)">
               <t-icon name="delete" style="color: red"></t-icon>
             </t-button>
           </template>
@@ -75,11 +68,10 @@ import { useChooseStore, useNoticeStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { createNotice } from '@/apis/notice'
-import { MessagePlugin } from 'tdesign-vue-next'
 import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
 import XEUtils from '_xe-utils@3.5.4@xe-utils'
 const NOTICE_INIT = {
-  notice_type: 0,
+  notice_type: '',
   notice_topic: '',
   notice_content: '',
   class_id: [],
@@ -88,7 +80,7 @@ const NOTICE_INIT = {
 const chooseStore = useChooseStore()
 const noticeStore = useNoticeStore()
 const { noticeList } = storeToRefs(noticeStore)
-const { chooseClass } = storeToRefs(chooseStore)
+const { chooseClass, chooseCourse } = storeToRefs(chooseStore)
 const newNoticeVisibleModal = ref(false)
 const newNoticeForm = ref(NOTICE_INIT)
 const newNoticeConfirmBtnLoading = ref(false)
@@ -105,29 +97,25 @@ const formatType: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
 }
 const newNotice = async function () {
   newNoticeConfirmBtnLoading.value = true
-  newNoticeForm.value.class_id.forEach((classID) => {
-    createNotice(
-      classID,
-      newNoticeForm.value.notice_type,
-      newNoticeForm.value.notice_topic,
-      newNoticeForm.value.notice_content,
-    )
-      .then(async () => {
-        await getNoticeList()
-      })
-      .catch(async () => {
-        await MessagePlugin.error('新建通知失败！')
-      })
+  await createNotice(
+    chooseCourse.value.id,
+    newNoticeForm.value.notice_type,
+    newNoticeForm.value.notice_topic,
+    newNoticeForm.value.notice_content,
+    newNoticeForm.value.class_id,
+  ).then(async () => {
+    await noticeStore.flushNoticeByCourse(chooseCourse.value.id)
   })
   newNoticeVisibleModal.value = false
+  newNoticeConfirmBtnLoading.value = false
 }
 const getNoticeList = async function () {
   noticeStore.clearNoticeList()
   // @ts-ignore
-  await noticeStore.flushNoticeByClass(chooseClass.value)
+  await noticeStore.flushNoticeByCourse(chooseCourse.value.id)
 }
 const editNotice = function (row) {}
-const deleteNoticeDialog = function (row) {}
+const deleteNotice = function (row) {}
 onMounted(() => {
   getNoticeList()
 })

@@ -55,14 +55,7 @@ export function courseFileDownLoad(fileId, fileName) {
       file_id: fileId,
     },
   }).then((resp) => {
-    axios
-      // @ts-ignore
-      .get(resp.data.data.url, {
-        responseType: 'blob',
-      })
-      .then((res) => {
-        // @ts-ignore
-        window.open(resp.data.data.url, '_blank')
-      })
+    // @ts-ignore
+    window.open(resp.data.data.url, '_blank')
   })
 }

@@ -85,6 +85,14 @@ watch(
 #index-header {
   .operations-container {
     display: flex;
+    /*左右居中*/
+    justify-content: center;
+    /*上下居中*/
+    align-items: center;
+    background-color: #F7F5D3;
+  }
+  .header-user-btn {
+    height: 100%;
   }
 }
 </style>

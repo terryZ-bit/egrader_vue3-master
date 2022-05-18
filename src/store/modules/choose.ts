@@ -1,8 +1,8 @@
 import { store } from '@/store'
-import { defineStore } from '_pinia@2.0.13@pinia'
 import { sessionStorage } from '@/utils/storage'
 import { listCourse } from '@/apis/course'
 import { MessagePlugin } from 'tdesign-vue-next'
+import { defineStore } from 'pinia'
 export const useChooseStore = defineStore('choose', {
   state: () => ({
     chooseCourse: {
