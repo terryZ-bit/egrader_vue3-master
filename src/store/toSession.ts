@@ -5,10 +5,18 @@ import * as path from '@/store/index'
 
 export function beforeFlushToSession() {
   const chooseStore = path.useChooseStore()
+  const courseStore = path.useCourseStore()
+  const userStore = path.useUserStore()
   chooseStore.toSessionStorage()
+  courseStore.toSession()
+  userStore.toSession()
 }
 
 export function afterFlushToSession() {
   const chooseStore = path.useChooseStore()
+  const courseStore = path.useCourseStore()
+  const userStore = path.useUserStore()
   chooseStore.fromSessionStorage()
+  courseStore.fromSession()
+  userStore.fromSession()
 }

@@ -3,10 +3,7 @@ import { RouteRecordRaw } from 'vue-router'
 import router, { asyncRouterList } from '@/router'
 import { store } from '@/store'
 
-function filterPermissionsRouters(
-  routes: Array<RouteRecordRaw>,
-  roles: Array<unknown>,
-) {
+function filterPermissionsRouters(routes: Array<RouteRecordRaw>, roles: Array<unknown>) {
   const res = []
   const removeRoutes = []
   routes.forEach((route) => {

@@ -191,7 +191,7 @@ const handleUploadBegin = () => {
     .catch(async (err) => {
       console.log(err)
     })
-  const oBtn = uploadInput.value as HTMLElement
+  const oBtn = uploadInput.value as unknown as HTMLElement
   oBtn.click()
 }
 const handleUploadComplete = async function () {
@@ -235,7 +235,7 @@ const flushCourseFiles = function () {
         item.confirmBtnLoading = false
       })
     })
-    // eslint-disable-next-line node/handle-callback-err
+    // eslint-disable-next-line node/handle-callback-err,n/handle-callback-err
     .catch((err) => {
       MessagePlugin.error('获取课程文档库错误！')
     })
@@ -257,7 +257,7 @@ onMounted(() => {
       // @ts-ignore
       courseFileList.value = resp.data.data
     })
-    // eslint-disable-next-line node/handle-callback-err
+    // eslint-disable-next-line node/handle-callback-err,n/handle-callback-err
     .catch((err) => {
       MessagePlugin.error('获取课程文档库错误！')
     })

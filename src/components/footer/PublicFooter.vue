@@ -1,10 +1,8 @@
 <template>
-  <div id="public-footer" style="text-align: center">
-    Copyright ©2021-2022 · 云助教 · 渝ICP备2022001770号-1
-  </div>
+  <div id="public-footer" style="text-align: center">Copyright ©2021-2022 · 云助教 · 渝ICP备2022001770号-1</div>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'PublicFooter',
 }

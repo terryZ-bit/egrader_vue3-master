@@ -1,6 +1,7 @@
 import { store } from '@/store'
 import { defineStore } from 'pinia'
 import { TOKEN_NAME } from '@/config/global'
+import { sessionStorage } from '@/utils/storage'
 
 const InitUserInfo = {
   name: '',
@@ -29,6 +30,16 @@ export const useUserStore = defineStore('user', {
     async logIn(email) {
       localStorage.setItem('email', email)
       this.userInfo.email = email
+    },
+    toSession() {
+      sessionStorage.set('userInfo', this.userInfo)
+    },
+    fromSession() {
+      this.userInfo = sessionStorage.get('userInfo')
+      sessionStorage.remove('userInfo')
+    },
+    setUserInfo(info) {
+      this.userInfo = info
     },
   },
 })

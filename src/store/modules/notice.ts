@@ -36,6 +36,7 @@ export const useNoticeStore = defineStore('notice', {
         .catch((err) => {
           console.log(err)
         })
+      return true
     },
   },
 })

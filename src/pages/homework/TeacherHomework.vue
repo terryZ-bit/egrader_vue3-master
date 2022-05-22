@@ -4,37 +4,33 @@
       <template #actions>
         <t-button size="small" @click="pushToNewHomework">新建作业</t-button>
       </template>
-      <div>
-        <vxe-table :data="teacherHomeworkList" align="center">
-          <vxe-column type="seq" width="60"></vxe-column>
-          <vxe-column field="name" title="作业标题"></vxe-column>
-          <vxe-column field="score_max" title="作业分数上限"></vxe-column>
-          <vxe-column field="create_time" title="创建时间" :formatter="formatTime"></vxe-column>
-          <vxe-column field="end_time" title="结束时间" :formatter="formatTime"></vxe-column>
-          <vxe-column field="rate_each_flag" title="是否互评" :formatter="formatYesOrNo"></vxe-column>
-          <vxe-column field="score_detail_flag" title="是否按小题打分" :formatter="formatYesOrNo"></vxe-column>
-          <vxe-column field="class_name_list" title="发布到的班级"></vxe-column>
-          <vxe-column title="操作" width="140px">
-            <template #default="{ row }">
-              <t-popup content="查看详情">
-                <t-button shape="circle" variant="text" @click="detailHomework(row)">
-                  <t-icon name="browse" style="color: #000000"></t-icon>
-                </t-button>
-              </t-popup>
-              <t-popup content="编辑">
-                <t-button shape="circle" variant="text" @click="editHomework(row)">
-                  <t-icon name="edit" style="color: #002b9f"></t-icon>
-                </t-button>
-              </t-popup>
-              <t-popup content="删除">
-                <t-button shape="circle" variant="text" @click="deleteHomework(row)">
-                  <t-icon name="delete" style="color: red"></t-icon>
-                </t-button>
-              </t-popup>
-            </template>
-          </vxe-column>
-        </vxe-table>
-      </div>
+      <t-skeleton animation="flashed" :loading="skeletonLoading">
+        <div>
+          <vxe-table :data="teacherHomeworkList" align="center">
+            <vxe-column type="seq" width="60"></vxe-column>
+            <vxe-column field="name" title="作业标题"></vxe-column>
+            <vxe-column field="score_max" title="作业分数上限"></vxe-column>
+            <vxe-column field="end_time" title="结束时间" :formatter="formatTime"></vxe-column>
+            <vxe-column field="rate_each_flag" title="是否互评" :formatter="formatYesOrNo"></vxe-column>
+            <vxe-column field="score_detail_flag" title="是否按小题打分" :formatter="formatYesOrNo"></vxe-column>
+            <vxe-column field="class_name_list" title="发布到的班级"></vxe-column>
+            <vxe-column title="操作" width="110px">
+              <template #default="{ row }">
+                <t-popup content="查看详情">
+                  <t-button shape="circle" variant="text" @click="detailHomework(row)">
+                    <t-icon name="browse" style="color: #000000"></t-icon>
+                  </t-button>
+                </t-popup>
+                <t-popup content="删除">
+                  <t-button shape="circle" variant="text" @click="deleteHomework(row)">
+                    <t-icon name="delete" style="color: red"></t-icon>
+                  </t-button>
+                </t-popup>
+              </template>
+            </vxe-column>
+          </vxe-table>
+        </div>
+      </t-skeleton>
     </t-card>
   </div>
 </template>
@@ -89,9 +85,10 @@ const pushToNewHomework = function () {
 const detailHomework = function (row) {
   router.push({ name: 'teacherHomeworkDetail', params: { teacherHomeworkId: row.id } })
 }
-const editHomework = function (row) {}
+const skeletonLoading = ref(false)
 const deleteHomework = function (row) {}
 const getTeacherHomeworkList = async function () {
+  skeletonLoading.value = true
   listTeacherHomework(chooseCourse.value.id, chooseRole.value.roleId)
     .then(async (resp) => {
       // @ts-ignore
@@ -113,6 +110,9 @@ const getTeacherHomeworkList = async function () {
     })
     .catch(async (err) => {
       console.log(err)
+    })
+    .finally(() => {
+      skeletonLoading.value = false
     })
 }
 

@@ -6,10 +6,16 @@
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import { onMounted } from 'vue'
 import { afterFlushToSession, beforeFlushToSession } from '@/store/toSession'
+import axios from 'axios'
 
 onMounted(() => {
   afterFlushToSession()
   console.log('在刷新后执行')
+  axios
+    .post('https://1862232491914219.cn-chengdu.fc.aliyuncs.com/2016-08-15/proxy/cold_deployment.LATEST/all_function/')
+    .then(() => {
+      console.log('ok ok ok')
+    })
 })
 window.onbeforeunload = function () {
   beforeFlushToSession()

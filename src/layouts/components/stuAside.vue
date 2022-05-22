@@ -9,6 +9,22 @@
       :collapsed="collapsed"
       @change="menuChange"
     >
+      <template #logo>
+        <span v-if="showLogo" class="header-logo-container">
+          <img
+            src="../../assets/logo/logo_big.png"
+            alt="404"
+            style="height: 22px; width: 125px; margin-left: 20px; margin-top: 20px; margin-bottom: 9.3px"
+          />
+        </span>
+        <span v-else>
+          <img
+            alt="404"
+            src="../../assets/logo/logo_small.png"
+            style="height: 20px; width: 20px; margin-left: 20px; margin-top: 10px"
+          />
+        </span>
+      </template>
       <t-menu-item value="stuDashboard">
         <template #icon>
           <t-icon name="desktop" />
@@ -46,17 +62,18 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { ref } from 'vue'
-import { computed } from '_vue@3.2.33@vue'
+import { ref, computed } from 'vue'
 import { useStyleStore } from '@/store'
 import router from '@/router'
 
 const collapsed = ref(false)
 const styleStore = useStyleStore()
+const showLogo = ref(true)
 const iconName = computed(() => (collapsed.value ? 'chevron-right' : 'chevron-left'))
 
 const changeCollapsed = () => {
   collapsed.value = !collapsed.value
+  showLogo.value = !showLogo.value
   styleStore.setAsideWidth(collapsed.value === true ? '64px' : '232px')
 }
 const menuChange = (menuVal) => {

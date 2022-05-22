@@ -1,15 +1,6 @@
 <template>
   <div id="index-header">
     <t-head-menu expand-type="popup">
-      <template #logo>
-        <span v-if="showLogo" class="header-logo-container">
-          <img
-            src="../../assets/logo/img.png"
-            alt="404"
-            style="height: 40px; width: 120px; margin-left: 30px; margin-top: 20px"
-          />
-        </span>
-      </template>
       <template #operations>
         <div class="operations-container">
           <!-- 搜索框 -->
@@ -89,7 +80,6 @@ watch(
     justify-content: center;
     /*上下居中*/
     align-items: center;
-    background-color: #F7F5D3;
   }
   .header-user-btn {
     height: 100%;

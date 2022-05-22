@@ -37,7 +37,7 @@
       <template #actions>
         <t-button size="small" @click="newNoticeVisibleModal = true">新建通知</t-button>
       </template>
-      <vxe-table :data="noticeList" border>
+      <vxe-table :data="noticeList" border :loading="tableLoading">
         <vxe-column type="seq" width="60"></vxe-column>
         <vxe-column field="notice_topic" title="通知题目"></vxe-column>
         <vxe-column field="notice_content" title="通知内容"></vxe-column>
@@ -84,6 +84,7 @@ const { chooseClass, chooseCourse } = storeToRefs(chooseStore)
 const newNoticeVisibleModal = ref(false)
 const newNoticeForm = ref(NOTICE_INIT)
 const newNoticeConfirmBtnLoading = ref(false)
+const tableLoading = ref(false)
 const formatTime: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
   return XEUtils.toDateString(cellValue, 'yyyy年MM月dd日 HH时ss分')
 }
@@ -110,9 +111,13 @@ const newNotice = async function () {
   newNoticeConfirmBtnLoading.value = false
 }
 const getNoticeList = async function () {
+  tableLoading.value = true
   noticeStore.clearNoticeList()
   // @ts-ignore
-  await noticeStore.flushNoticeByCourse(chooseCourse.value.id)
+  if (noticeStore.flushNoticeByCourse(chooseCourse.value.id)) {
+    tableLoading.value = false
+  }
+  tableLoading.value = false
 }
 const editNotice = function (row) {}
 const deleteNotice = function (row) {}

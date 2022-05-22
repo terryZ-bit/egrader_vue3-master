@@ -1,15 +1,15 @@
 <template>
   <div id="index-main">
     <t-layout style="height: 100vh">
-      <t-header>
-        <index-header></index-header>
-      </t-header>
-      <t-layout>
-        <t-aside :width="asideWidthThisPage">
-          <stu-aside v-if="chooseRole.roleType === 'student'"></stu-aside>
-          <index-aside v-else></index-aside>
-        </t-aside>
-        <t-content>
+      <t-aside :width="asideWidthThisPage" class="t-aside">
+        <stu-aside v-if="chooseRole.roleType === 'student'"></stu-aside>
+        <index-aside v-else></index-aside>
+      </t-aside>
+      <t-layout style="width: 300px" class="t-main-layout">
+        <t-header>
+          <index-header></index-header>
+        </t-header>
+        <t-content class="t-content">
           <router-view v-slot="{ Component }">
             <transition mode="out-in" enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
               <component :is="Component" v-if="showNav" style="animation-duration: 200ms" />
@@ -75,6 +75,12 @@ watch(
   }
   .fade-box-leave-to {
     animation: bounceOutRight 0.8s;
+  }
+  .t-main-layout {
+    flex: 1;
+    min-width: 760px;
+    height: calc(100vh - 64px);
+    overflow-y: scroll;
   }
 }
 </style>

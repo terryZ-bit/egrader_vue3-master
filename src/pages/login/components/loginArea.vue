@@ -58,7 +58,7 @@ import { login } from '@/apis/login'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { useRouter } from 'vue-router'
 import md5 from 'js-md5'
-import { getUserStore } from '@/store'
+import { useUserStore } from '@/store'
 const INITIAL_DATA = {
   account: '',
   password: '',
@@ -71,7 +71,7 @@ const FORM_RULES = {
 const formData = ref({ ...INITIAL_DATA })
 const loginBtnLoading = ref(LOGIN_BTN_LOADING)
 const router = useRouter()
-const useStore = getUserStore()
+const userStore = useUserStore()
 const onSubmit = async ({ validateResult }) => {
   if (validateResult === true) {
     loginBtnLoading.value = true
@@ -81,7 +81,7 @@ const onSubmit = async ({ validateResult }) => {
           loginBtnLoading.value = false
           MessagePlugin.success('登录成功!')
           router.push({ name: 'chooseRole', params: { showHeader: 'login' } })
-          useStore.logIn(formData.value.account)
+          userStore.setUserInfo({ name: '', email: formData.value.account })
         })
         .catch((err) => {
           console.log(err)

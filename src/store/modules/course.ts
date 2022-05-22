@@ -2,6 +2,7 @@ import { store } from '@/store'
 import { listCourse } from '@/apis/course'
 import { MessagePlugin } from 'tdesign-vue-next'
 import { defineStore } from 'pinia'
+import { sessionStorage } from '@/utils/storage'
 export const useCourseStore = defineStore('course', {
   state: () => ({
     createCourseList: [],
@@ -45,6 +46,22 @@ export const useCourseStore = defineStore('course', {
         }
       })
       this.manageClassList = classList
+    },
+    toSession() {
+      sessionStorage.set('createCourseList', this.createCourseList)
+      sessionStorage.set('inCourseList', this.inCourseList)
+      sessionStorage.set('tutorCourseList', this.tutorCourseList)
+      sessionStorage.set('manageClassList', this.manageClassList)
+    },
+    fromSession() {
+      this.manageClassList = sessionStorage.get('manageClassList')
+      this.tutorCourseList = sessionStorage.get('tutorCourseList')
+      this.inCourseList = sessionStorage.get('inCourseList')
+      this.createCourseList = sessionStorage.get('createCourseList')
+      sessionStorage.remove('manageClassList')
+      sessionStorage.remove('tutorCourseList')
+      sessionStorage.remove('inCourseList')
+      sessionStorage.remove('createCourseList')
     },
   },
 })

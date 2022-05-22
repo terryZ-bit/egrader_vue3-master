@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { storage } from '@/utils/storage'
-import { MessagePlugin } from 'tdesign-vue-next'
 import { start, close } from '@/utils/nprogress'
 
 export const request = (options: any) => {
@@ -40,7 +39,6 @@ export const request = (options: any) => {
       (error) => {
         close()
         console.log('err' + error)
-        MessagePlugin.error(error).then((r) => console.log(r))
         return Promise.reject(error)
       },
     )

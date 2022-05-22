@@ -98,7 +98,6 @@ const deleteClassDialog = function (row) {
   const confirmDia = DialogPlugin({
     header: '确认删除？',
     body: '删除后所有学生信息会丢失！',
-    cancelBtn: '取消',
     draggable: true,
     onConfirm: async ({ e }) => {
       console.log('e: ', e)

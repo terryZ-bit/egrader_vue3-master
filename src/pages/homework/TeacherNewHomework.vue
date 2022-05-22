@@ -78,7 +78,7 @@
               </t-button>
             </div>
             <t-form colon label-align="left">
-              <t-form-item label="小题题目">
+              <t-form-item label="评分点详情">
                 <t-input v-model="item.question_name"></t-input>
               </t-form-item>
               <t-form-item label="分数上限">
@@ -161,7 +161,7 @@ const newScoreDetailList = ref([
   {
     question_id: 1,
     question_name: '',
-    score_max: undefined,
+    score_max: 9,
   },
 ])
 const handleUploadBegin = () => {

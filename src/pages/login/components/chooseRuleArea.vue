@@ -119,7 +119,7 @@
                 variant="outline"
                 style="width: 80%; margin-top: 30px"
                 @click="roleLogin(stu)"
-                >{{ stu.class_name }}</t-button
+                >{{ stu.join_classes[stu.class_id].class_name }}</t-button
               >
             </div>
             <div>
@@ -309,13 +309,14 @@ const roleLogin = async function (course) {
     chooseStore.setChooseRole(teacherId, 'teacher')
     console.log(course.id)
     await chooseStore.flushChooseClass()
+    await router.push({ name: 'teacherCourse' })
     // eslint-disable-next-line no-prototype-builtins
   } else if (course.hasOwnProperty('student_id')) {
     console.log('学生登录')
-    chooseStore.setCourse(course)
     chooseStore.setChooseRole(course.student_id, 'student')
+    chooseStore.setClass(course)
+    await router.push({ name: 'stuHomework' })
   }
-  await router.push({ name: 'base' })
 }
 </script>
 

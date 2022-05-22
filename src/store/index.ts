@@ -15,5 +15,6 @@ export * from './modules/choose'
 export * from './modules/style'
 export * from './modules/notice'
 export * from './modules/teacherHomework'
+export * from './modules/rateEach'
 
 export default store
