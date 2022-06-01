@@ -61,5 +61,10 @@ export default [
     component: () => import('@/pages/homework/StuRateDetail.vue'),
     props: true,
   },
+  {
+    path: 'teacherStudentManage',
+    name: 'teacherStudentManage',
+    component: () => import('@/pages/course/TeacherStudentManage.vue'),
+  },
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]

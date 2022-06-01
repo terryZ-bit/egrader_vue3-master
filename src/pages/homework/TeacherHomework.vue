@@ -43,8 +43,8 @@ export default {
 <script lang="ts" setup>
 // eslint-disable-next-line no-unused-vars
 import { onMounted, ref } from 'vue'
-import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
-import XEUtils from '_xe-utils@3.5.4@xe-utils'
+import { VxeColumnPropTypes } from 'vxe-table'
+import XEUtils from 'xe-utils'
 import router from '@/router'
 import { listTeacherHomework } from '@/apis/homework/teacherHomework'
 import { useChooseStore, useTeacherHomeworkStore } from '@/store'

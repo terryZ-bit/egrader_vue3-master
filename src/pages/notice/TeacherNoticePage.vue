@@ -68,8 +68,8 @@ import { useChooseStore, useNoticeStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { createNotice } from '@/apis/notice'
-import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
-import XEUtils from '_xe-utils@3.5.4@xe-utils'
+import { VxeColumnPropTypes } from 'vxe-table'
+import XEUtils from 'xe-utils'
 const NOTICE_INIT = {
   notice_type: '',
   notice_topic: '',

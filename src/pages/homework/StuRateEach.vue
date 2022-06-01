@@ -145,8 +145,8 @@ import { getTeacherHomeworkFile } from '@/apis/homework/teacherHomework'
 import { useChooseStore, useRateEachStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import XEUtils from '_xe-utils@3.5.4@xe-utils'
-import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
+import XEUtils from 'xe-utils'
+import { VxeColumnPropTypes } from 'vxe-table'
 import router from '@/router'
 
 const chooseStore = useChooseStore()

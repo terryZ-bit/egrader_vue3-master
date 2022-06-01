@@ -190,11 +190,10 @@ import { getTeacherHomeworkFile } from '@/apis/homework/teacherHomework'
 import { useChooseStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import XEUtils from '_xe-utils@3.5.4@xe-utils'
-import { RequestMethodResponse } from '_tdesign-vue-next@0.14.2@tdesign-vue-next'
+import { RequestMethodResponse, MessagePlugin } from 'tdesign-vue-next'
 import { getUploadSTS } from '@/apis/oss/sts'
 import OSS from 'ali-oss'
 import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
-import { MessagePlugin } from 'tdesign-vue-next'
 
 const stuHomeworkDetailLoading = ref(false)
 const chooseStore = useChooseStore()

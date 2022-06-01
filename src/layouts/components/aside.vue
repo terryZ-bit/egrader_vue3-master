@@ -42,7 +42,7 @@
           <t-icon name="usergroup" />
         </template>
         <t-menu-item value="teacherCourse"> 课程管理 </t-menu-item>
-        <t-menu-item value="stuManage"> 学生管理 </t-menu-item>
+        <t-menu-item value="teacherStudentManage"> 学生管理 </t-menu-item>
       </t-submenu>
       <template #operations>
         <t-icon class="t-menu__operations-icon" :name="iconName" @click="changeCollapsed" />

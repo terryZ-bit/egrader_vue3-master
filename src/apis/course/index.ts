@@ -55,3 +55,13 @@ export function joinClass(classCode, studentId) {
     },
   })
 }
+
+export function getCourseStudent(courseId) {
+  return request({
+    url: 'course.LATEST/get_course_students/',
+    method: 'POST',
+    data: {
+      course_id: courseId,
+    },
+  })
+}
