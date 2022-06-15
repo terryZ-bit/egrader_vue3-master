@@ -103,7 +103,6 @@
     </t-card>
   </div>
 </template>
-
 <script lang="ts">
 export default {
   name: 'TeacherHomework',

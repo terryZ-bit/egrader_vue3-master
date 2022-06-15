@@ -301,10 +301,7 @@ const getHomeworkInfo_ = function () {
     .then((resp) => {
       // @ts-ignore
       console.log(resp.data.data)
-      console.log(resp.data.data)
-      console.log(resp.data.data)
-      console.log(resp.data.data)
-      console.log(resp.data.data)
+      // @ts-ignore
       homeworkInfo.value = resp.data.data
       // @ts-ignore
       if (homeworkInfo.value.student_homework_finish_status === 1) {

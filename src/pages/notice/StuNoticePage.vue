@@ -41,8 +41,6 @@ const getNoticeList = async function () {
   tableLoading.value = true
   noticeStore.clearNoticeList()
   // @ts-ignore
-  console.log(chooseClass)
-  console.log(noticeStore)
   if (noticeStore.flushNoticeByClass(chooseClass.value.class_id)) {
     tableLoading.value = false
   }
