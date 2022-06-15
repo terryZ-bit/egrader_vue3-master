@@ -14,11 +14,16 @@
             <vxe-column field="rate_each_flag" title="是否互评" :formatter="formatYesOrNo"></vxe-column>
             <vxe-column field="score_detail_flag" title="是否按小题打分" :formatter="formatYesOrNo"></vxe-column>
             <vxe-column field="class_name_list" title="发布到的班级"></vxe-column>
-            <vxe-column title="操作" width="110px">
+            <vxe-column title="操作" width="150px">
               <template #default="{ row }">
                 <t-popup content="查看详情">
                   <t-button shape="circle" variant="text" @click="detailHomework(row)">
                     <t-icon name="browse" style="color: #000000"></t-icon>
+                  </t-button>
+                </t-popup>
+                <t-popup content="查看完成情况">
+                  <t-button shape="circle" variant="text" @click="watchHomework(row)">
+                    <t-icon name="check-circle" style="color: #0052d9"></t-icon>
                   </t-button>
                 </t-popup>
                 <t-popup content="删除">
@@ -107,6 +112,8 @@ const getTeacherHomeworkList = async function () {
         })
       })
       teacherHomeworkStore.setTeacherHomeworkList(respData)
+      // @ts-ignore
+      console.log(teacherHomeworkList.value[0].end_time)
     })
     .catch(async (err) => {
       console.log(err)
@@ -116,6 +123,9 @@ const getTeacherHomeworkList = async function () {
     })
 }
 
+const watchHomework = function (row) {
+  router.push({ name: 'teacherWatchHomework', params: { teacherHomeworkName: row.name, teacherHomeworkId: row.id } })
+}
 onMounted(() => {
   getTeacherHomeworkList()
 })

@@ -112,7 +112,7 @@ const newNotice = async function () {
 }
 const getNoticeList = async function () {
   tableLoading.value = true
-  noticeStore.clearNoticeList()
+  await noticeStore.clearNoticeList()
   // @ts-ignore
   if (noticeStore.flushNoticeByCourse(chooseCourse.value.id)) {
     tableLoading.value = false

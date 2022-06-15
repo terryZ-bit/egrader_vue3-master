@@ -2,8 +2,9 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { start, close } from '@/utils/nprogress'
 import { storage } from '@/utils/storage'
-import components from '@/router/modules/components'
 import base from '@/router/modules/base'
+import studentRoute from '@/router/modules/studentRoute'
+import teacherRoute from '@/router/modules/teacherRoute'
 
 // 存放动态路由
 export const asyncRouterList: Array<RouteRecordRaw> = []
@@ -39,7 +40,7 @@ const defaultRouterList: Array<RouteRecordRaw> = [
     name: 'base',
     redirect: '/base/basePage',
     component: () => import('@/layouts/index.vue'),
-    children: [...components, ...base],
+    children: [...base, ...studentRoute, ...teacherRoute],
   },
   {
     path: '/:w+',

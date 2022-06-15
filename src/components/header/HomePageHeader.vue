@@ -1,14 +1,7 @@
 <template>
   <div id="home-page-header">
-    <div
-      class="logo-area"
-      style="text-align: center; display: flex; align-items: center"
-    >
-      <img
-        src="../../assets/logo/img.png"
-        alt="404"
-        style="height: 40px; width: 120px; margin-left: 30px"
-      />
+    <div class="logo-area" style="text-align: center; display: flex; align-items: center">
+      <img src="../../assets/logo/img.png" alt="404" style="height: 40px; width: 120px; margin-left: 30px" />
     </div>
     <div class="navigation-area">
       <t-button theme="default" variant="text">课程列表</t-button>
@@ -49,17 +42,23 @@ watch(
   display: flex;
   height: 100%;
   width: 100%;
-}
-.logo-area {
-  height: 100%;
-  width: 20%;
-}
 
-.navigation-area {
-  width: 60%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  .logo-area {
+    height: 100%;
+    width: 20%;
+  }
+
+  .navigation-area {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .sign-up-area {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
 </style>

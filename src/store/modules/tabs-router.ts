@@ -27,20 +27,14 @@ export const useTabsRouterStore = defineStore('tabsRouter', {
       this.tabRouters[routeIdx].isAlive = !this.tabRouterList[routeIdx].isAlive
     },
     appendTabRouterList(newRoute: TRouterInfo) {
-      if (
-        !this.tabRouterList.find(
-          (route: TRouterInfo) => route.path === newRoute.path,
-        )
-      ) {
+      if (!this.tabRouterList.find((route: TRouterInfo) => route.path === newRoute.path)) {
         // eslint-disable-next-line no-param-reassign
         this.tabRouterList = this.tabRouterList.concat(newRoute)
       }
     },
     subtractCurrentTabRouter(newRoute: TRouterInfo) {
       const { routeIdx } = newRoute
-      this.tabRouterList = this.tabRouterList
-        .slice(0, routeIdx)
-        .concat(this.tabRouterList.slice(routeIdx + 1))
+      this.tabRouterList = this.tabRouterList.slice(0, routeIdx).concat(this.tabRouterList.slice(routeIdx + 1))
     },
     subtractTabRouterBehind(newRoute: TRouterInfo) {
       const { routeIdx } = newRoute

@@ -1,14 +1,7 @@
 <template>
   <div id="public-header">
-    <div
-      class="logo-area"
-      style="text-align: center; display: flex; align-items: center"
-    >
-      <img
-        src="../../assets/logo/img.png"
-        alt="404"
-        style="height: 40px; width: 120px; margin-left: 30px"
-      />
+    <div class="logo-area" style="text-align: center; display: flex; align-items: center">
+      <img src="../../assets/logo/img.png" alt="404" style="height: 40px; width: 120px; margin-left: 30px" />
     </div>
     <div class="navigation-area">
       <t-button theme="default" variant="text">功能</t-button>
@@ -17,9 +10,7 @@
     </div>
     <div class="sign-up-area" style="margin-left: 20px">
       <t-button theme="primary" size="small"> 登录 </t-button>
-      <t-button theme="primary" style="margin-left: 20px" size="small">
-        注册
-      </t-button>
+      <t-button theme="primary" style="margin-left: 20px" size="small"> 注册 </t-button>
     </div>
   </div>
 </template>
@@ -41,17 +32,23 @@ export default {
   display: flex;
   height: 100%;
   width: 100%;
-}
-.logo-area {
-  height: 100%;
-  width: 20%;
-}
+  .logo-area {
+    height: 100%;
+    width: 20%;
+  }
 
-.navigation-area {
-  width: 60%;
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  .navigation-area {
+    width: 60%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .sign-up-area {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
 }
 </style>

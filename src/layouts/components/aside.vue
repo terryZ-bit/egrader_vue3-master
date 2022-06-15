@@ -59,7 +59,7 @@
         </template>
         通知
       </t-menu-item>
-      <t-menu-item value="userInfo">
+      <t-menu-item value="teacherUserInfo">
         <template #icon>
           <t-icon name="user" />
         </template>
