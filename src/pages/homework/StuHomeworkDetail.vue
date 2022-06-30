@@ -193,7 +193,7 @@ import XEUtils from '_xe-utils@3.5.4@xe-utils'
 import { RequestMethodResponse, MessagePlugin } from 'tdesign-vue-next'
 import { getUploadSTS } from '@/apis/oss/sts'
 import OSS from 'ali-oss'
-import { VxeColumnPropTypes } from '_vxe-table@4.2.3@vxe-table'
+import { VxeColumnPropTypes } from 'vxe-table'
 
 const stuHomeworkDetailLoading = ref(false)
 const chooseStore = useChooseStore()

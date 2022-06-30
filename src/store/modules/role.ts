@@ -31,7 +31,6 @@ export const useRoleStore = defineStore('role', {
           if (resp.data.data.teachers.length === 0) {
             this.teacherList = undefined
           }
-          MessagePlugin.success('获取角色列表成功！')
         })
         .catch((err) => {
           console.log(err)

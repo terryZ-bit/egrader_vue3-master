@@ -60,7 +60,6 @@ export const useChooseStore = defineStore('choose', {
             this.chooseClass.push(class_)
           }
         })
-        await MessagePlugin.success('刷新班级列表成功！')
       })
     },
   },

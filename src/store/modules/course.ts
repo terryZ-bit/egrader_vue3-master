@@ -31,7 +31,6 @@ export const useCourseStore = defineStore('course', {
           this.inCourseList = resp.data.data.choose_class_t
           // @ts-ignore
           this.manageClassList = resp.data.data.class_t
-          await MessagePlugin.success('刷新课程列表成功！')
         })
         .catch(async (err) => {
           await MessagePlugin.error('刷新课程列表失败！')

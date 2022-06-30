@@ -61,11 +61,6 @@
                   <t-icon name="download" style="color: #000000"></t-icon>
                 </t-button>
               </t-popup>
-              <t-popup content="查看">
-                <t-button shape="circle" variant="text" @click="downloadHomework(row)">
-                  <t-icon name="browse" style="color: #002b9e"></t-icon>
-                </t-button>
-              </t-popup>
             </template>
           </vxe-column>
         </vxe-table>
@@ -99,6 +94,7 @@ export default {
 </script>
 <script lang="ts" setup>
 import { teacherGetHomeworkDetail, teacherUpdateStudentGrade } from '@/apis/homework/teacherHomework'
+import { stuGetHomeworkFileUrl } from '@/apis/homework/studentHomework'
 import { onMounted, ref } from 'vue'
 import { formatTime, GMTToStr } from '@/utils/format'
 import { MessagePlugin } from 'tdesign-vue-next'
@@ -121,6 +117,9 @@ const submitBtnLoading = ref(false)
 const submitGrade = async function () {
   submitBtnLoading.value = true
   await teacherUpdateStudentGrade(props.homeworkId, grade.value)
+    .then(() => {
+      MessagePlugin.success('修改成功！')
+    })
     .catch((err) => {
       MessagePlugin.error('提交失败')
       console.log(err)
@@ -158,6 +157,10 @@ const getDataStudentHomeworkDetail = function (homeworkId) {
     .finally(() => {
       loadingControl.value = false
     })
+}
+
+const downloadHomework = function (row) {
+  stuGetHomeworkFileUrl(row.id)
 }
 
 onMounted(() => {

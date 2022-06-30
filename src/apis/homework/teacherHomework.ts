@@ -11,28 +11,16 @@ import { request } from '@/utils/request'
  * @param endTime
  * @param classList
  */
-export function createHomeworkBody(
-  teacherId,
-  name,
-  homeworkIntroduction,
-  scoreMax,
-  scoreDetailFlag,
-  rateEachFlag,
-  endTime,
-  classList,
-) {
+export function createHomeworkBody(teacherId, name, homeworkIntroduction, scoreMax, classList) {
   return request({
-    url: 'homework.LATEST/create_homework/',
+    url: 'egraderBackend.LATEST/homeworkService/createHomeworkBody',
     method: 'POST',
     data: {
       teacher_id: teacherId,
       name,
       homework_introduction: homeworkIntroduction,
       score_max: scoreMax,
-      rate_each_flag: rateEachFlag,
-      score_detail_flag: scoreDetailFlag,
-      end_time: endTime,
-      class_id_list: classList,
+      class_list: classList,
     },
   })
 }
@@ -78,7 +66,7 @@ export function getTeacherHomeworkOssPaths(teacherId, homeworkId, fileNameList) 
  */
 export function listTeacherHomework(courseId, teacherId) {
   return request({
-    url: 'homework.LATEST/get_homeworks/',
+    url: 'egraderBackend.LATEST/homeworkService/listTeacherHomework',
     method: 'POST',
     data: {
       course_id: courseId,
@@ -165,13 +153,41 @@ export function teacherGetHomeworkDetail(homeworkId) {
   })
 }
 
+/**
+ * 教师更新学生成绩接口
+ * @param homeworkId
+ * @param grade
+ */
 export function teacherUpdateStudentGrade(homeworkId, grade) {
   return request({
     url: 'egraderBackend.LATEST/homeworkService/teacherUpdateStudentGrade',
     method: 'POST',
     data: {
       homework_id: homeworkId,
-      grade: grade,
+      grade,
     },
   })
+}
+
+export function confirmTeacherHomework(teacherHomeworkId, endTime, rateEndTime, classList, rateEachFlag) {
+  return rateEachFlag
+    ? request({
+        url: 'egraderBackend.LATEST/homeworkService/confirmTeacherHomework',
+        method: 'POST',
+        data: {
+          teacher_homework_id: teacherHomeworkId,
+          end_time: endTime,
+          class_list: classList,
+          rate_each_end_time: rateEndTime,
+        },
+      })
+    : request({
+        url: 'egraderBackend.LATEST/homeworkService/confirmTeacherHomework',
+        method: 'POST',
+        data: {
+          teacher_homework_id: teacherHomeworkId,
+          end_time: endTime,
+          class_list: classList,
+        },
+      })
 }

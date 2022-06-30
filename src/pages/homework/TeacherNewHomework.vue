@@ -36,7 +36,7 @@
             <t-form-item label="作业总分">
               <t-input-number v-model="newHomeworkStepOneForm.scoreMax" theme="row" :min="0"></t-input-number>
             </t-form-item>
-            <t-form-item label="发布到班级">
+            <t-form-item label="发布到的班级">
               <t-select v-model="selectClass" placeholder="请选择要发布到的班级" multiple>
                 <t-option
                   v-for="item in chooseClass"
@@ -46,22 +46,8 @@
                 ></t-option>
               </t-select>
             </t-form-item>
-            <t-form-item label="截止时间">
-              <t-date-picker
-                v-model="newHomeworkStepOneForm.endTime"
-                theme="primary"
-                mode="date"
-                format="YYYY-MM-DD HH:mm:ss"
-                enable-time-picker
-              ></t-date-picker>
-            </t-form-item>
-            <t-form-item>
-              <t-checkbox v-model="newHomeworkStepOneForm.rateEachFlag" style="margin-right: 40px" value="1"
-                >进行学生间互评</t-checkbox
-              >
-            </t-form-item>
           </t-form>
-          <t-button :loading="stepOneLoading" @click="newHomeworkBody()">下一步</t-button>
+          <t-button :loading="stepOneLoading" style="margin-top: 20px" @click="newHomeworkBody()">下一步</t-button>
         </div>
         <div v-else-if="homeworkStep === 1" class="homework_detail_input">
           <t-tag style="width: 300px">如果不想设置评分细则，可以直接点击下一步</t-tag>
@@ -205,9 +191,6 @@ const newHomeworkBody = async function () {
     newHomeworkStepOneForm.value.name,
     newHomeworkStepOneForm.value.homeworkIntroduction,
     newHomeworkStepOneForm.value.scoreMax,
-    newHomeworkStepOneForm.value.scoreDetailFlag ? '1' : '0',
-    newHomeworkStepOneForm.value.rateEachFlag ? '1' : '0',
-    newHomeworkStepOneForm.value.endTime,
     selectClass.value,
   )
     .then(async (resp) => {

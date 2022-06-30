@@ -13,7 +13,7 @@ export const formatYesOrNo: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
   return item ? item.label : ''
 }
 export const formatTime: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
-  return XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:ss')
+  return cellValue === '暂无' ? '暂无' : XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:ss')
 }
 
 export const formatNullToCh: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
@@ -23,6 +23,9 @@ export const formatNullToCh: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
 
 export const GMTToStr = function (time) {
   const date = new Date(time)
+  if (time === null) {
+    return '暂无'
+  }
   return (
     date.getFullYear() +
     '-' +

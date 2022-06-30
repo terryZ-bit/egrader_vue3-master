@@ -30,8 +30,7 @@
               <vxe-column field="student_name" title="学生姓名"></vxe-column>
               <vxe-column field="student_number" title="学生学号"></vxe-column>
               <vxe-column field="finish_status" title="是否完成" :formatter="formatYesOrNo"></vxe-column>
-              <vxe-column field="homework_grade" title="成绩" :formatter="formatNullToCh"></vxe-column>
-              <vxe-column field="rate_each_grade" title="互评成绩" :formatter="formatNullToCh"></vxe-column>
+
               <vxe-column field="rate_each_end_flag" title="互评是否完成" :formatter="formatYesOrNo"></vxe-column>
               <vxe-column title="操作" width="110px">
                 <template #default="{ row }">
