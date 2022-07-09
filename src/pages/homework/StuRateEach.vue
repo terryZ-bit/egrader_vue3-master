@@ -9,10 +9,10 @@
       <div style="display: flex; flex-direction: column">
         <div>
           <t-button
-            theme="primary"
-            variant="text"
-            style="float: left; display: inline"
-            @click="$router.push({ name: 'stuHomework' })"
+              theme="primary"
+              variant="text"
+              style="float: left; display: inline"
+              @click="$router.push({ name: 'stuHomework' })"
           >
             <template #icon>
               <t-icon name="rollback"></t-icon>
@@ -43,7 +43,7 @@
               <t-row>
                 <t-col span="6">
                   <div class="teacher-homework-detail-span-left">
-                    <span>创建时间：</span>
+                    <span>发布时间：</span>
                     <i>{{ XEUtils.toDateString(homeworkInfo.create_time, 'yyyy-MM-dd HH:ss') }}</i>
                   </div>
                 </t-col>
@@ -114,15 +114,26 @@
             <vxe-table style="margin-left: 20px" :data="fakeRate">
               <vxe-column type="seq" width="60"></vxe-column>
               <vxe-column field="homework_message" title="作业详情"></vxe-column>
-              <vxe-column title="操作" width="110px">
+              <vxe-column title="操作" width="140px">
                 <template #default="{ row }">
                   <t-button
-                    theme="default"
-                    variant="dashed"
-                    :disabled="row.status === '1'"
-                    @click="detailHomework(row)"
+                      v-if="homeworkInfo.rate_expire"
+                      theme="default"
+                      variant="dashed"
+                      disabled
+                      style="color: #ff5959"
+                      @click="detailHomework(row)"
                   >
-                    {{ row.status === '1' ? '已完成' : '去评分' }}
+                    已截止
+                  </t-button>
+                  <t-button
+                      v-else
+                      theme="default"
+                      variant="dashed"
+                      :disabled="row.rate_flag === 1"
+                      @click="detailHomework(row)"
+                  >
+                    {{ row.rate_flag === 1 ? '已完成' : '去评分' }}
                   </t-button>
                 </template>
               </vxe-column>
@@ -148,6 +159,7 @@ import { onMounted, ref } from 'vue'
 import XEUtils from 'xe-utils'
 import { VxeColumnPropTypes } from 'vxe-table'
 import router from '@/router'
+import { getRaths } from '@/apis/mutual_operation/studentEach'
 
 const chooseStore = useChooseStore()
 const rateEachStore = useRateEachStore()
@@ -176,28 +188,46 @@ const getHomeworkInfo_ = function () {
   stuHomeworkDetailLoading.value = true
   // @ts-ignore
   getHomeworkInfo(chooseRole.value.roleId, chooseClass.value.class_id, props.rateParam)
-    .then((resp) => {
-      // @ts-ignore
-      homeworkInfo.value = resp.data.data
-      // @ts-ignore
-      // if (homeworkInfo.value) {
-      //
-      // }
-    })
-    .finally(() => {
-      stuHomeworkDetailLoading.value = false
-    })
+      .then((resp) => {
+        console.log(resp)
+        // @ts-ignore
+        homeworkInfo.value = resp.data.data
+        // @ts-ignore
+        // if (homeworkInfo.value) {
+        //
+        // }
+      })
+      .finally(() => {
+        stuHomeworkDetailLoading.value = false
+      })
+  getRaths(props.rateParam, chooseClass.value.student_id)
+      .then((res) => {
+        console.log('0000000000')
+        console.log('0000000000')
+        console.log('0000000000')
+        console.log('0000000000')
+        console.log('0000000000')
+        console.log(res.data.data)
+        console.log(rateDetailJson.value)
+        rateDetailJson.value = {}
+        fakeRate.value = res.data.data
+        for (const item of res.data.data) {
+          rateDetailJson.value[item.rate_each_id.toString()] = {
+            homework_oss: item.homework_oss,
+            rate_each_detail: item.rate_each_detail,
+          }
+          rateDetailJson.value.teacher_homework_id = props.rateParam
+        }
+      })
+      .finally(() => {})
 }
 
 const detailHomework = function (row) {
-  router.push({ name: 'stuRateDetail', params: { rateParam: row.id, homeworkParam: props.rateParam } })
-  // @ts-ignore
-  rateEachStore.setDetail(props.rateParam, homeworkInfo.value.score_detail_list)
+  router.push({ name: 'stuRateDetail', params: { rateParam: row.rate_each_id, homeworkParam: props.rateParam } })
 }
 onMounted(() => {
   getHomeworkInfo_()
   console.log(props.rateParam)
-  fakeRate.value = rateDetailJson.value[props.rateParam.toString()]
 })
 </script>
 

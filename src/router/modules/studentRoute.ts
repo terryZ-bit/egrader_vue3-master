@@ -30,5 +30,11 @@ export default [
     component: () => import('@/pages/homework/StuRateDetail.vue'),
     props: true,
   },
+  {
+    path: 'studentFolderManage',
+    name: 'studentFolderManage',
+    component: () => import('@/pages/courseFolder/studentFolderManage.vue'),
+    props: true,
+  },
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]

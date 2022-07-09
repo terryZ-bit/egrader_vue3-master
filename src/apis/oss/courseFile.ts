@@ -37,6 +37,16 @@ export function teacherGetCourseFiles(courseId) {
   })
 }
 
+export function studentGetCourseFiles(classId) {
+  return request({
+    url: 'STS.LATEST/student_get_file/',
+    method: 'POST',
+    data: {
+      class_id: classId,
+    },
+  })
+}
+
 export function teacherDeleteCourseFile(fileId) {
   return request({
     url: 'STS.LATEST/teacher_delete_file/',

@@ -7,16 +7,20 @@ export function beforeFlushToSession() {
   const chooseStore = path.useChooseStore()
   const courseStore = path.useCourseStore()
   const userStore = path.useUserStore()
+  const RateEachStore = path.useRateEachStore()
   chooseStore.toSessionStorage()
   courseStore.toSession()
   userStore.toSession()
+  RateEachStore.toSession()
 }
 
 export function afterFlushToSession() {
   const chooseStore = path.useChooseStore()
   const courseStore = path.useCourseStore()
   const userStore = path.useUserStore()
+  const rateEachStore = path.useRateEachStore()
   chooseStore.fromSessionStorage()
   courseStore.fromSession()
   userStore.fromSession()
+  rateEachStore.fromSession()
 }

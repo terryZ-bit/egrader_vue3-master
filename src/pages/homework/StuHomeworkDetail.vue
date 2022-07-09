@@ -43,7 +43,7 @@
               <t-row>
                 <t-col span="6">
                   <div class="teacher-homework-detail-span-left">
-                    <span>创建时间：</span>
+                    <span>发布时间：</span>
                     <i>{{ XEUtils.toDateString(homeworkInfo.create_time, 'yyyy-MM-dd HH:ss') }}</i>
                   </div>
                 </t-col>
@@ -98,12 +98,12 @@
               </vxe-table>
             </t-skeleton>
             <t-divider></t-divider>
-            <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">学生作业状态</p>
+            <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">我的作业状态</p>
             <t-skeleton :loading="stuHomeworkDetailLoading">
               <t-row>
                 <t-col span="6">
                   <div class="teacher-homework-detail-span-left">
-                    <span>学生作业状态：</span>
+                    <span>我的作业状态：</span>
                     <t-tag
                       :theme="homeworkInfo.student_homework_finish_status === 1 ? 'success' : 'danger'"
                       variant="light"
@@ -127,7 +127,7 @@
             </p>
             <t-form style="margin-top: 30px">
               <t-form-item label="作业留言">
-                <t-textarea v-model="homeworkMessage"></t-textarea>
+                <t-textarea v-model="homeworkMessage" :readonly="homeworkInfo.homework_expire"></t-textarea>
               </t-form-item>
               <t-form-item label="作业附件">
                 <vxe-table style="width: 100%" :data="homeworkInfo.student_homework_oss">
@@ -149,7 +149,7 @@
                   </vxe-column>
                 </vxe-table>
               </t-form-item>
-              <t-form-item label="上传文件">
+              <t-form-item v-show="!homeworkInfo.homework_expire" label="上传文件">
                 <t-upload
                   v-model="files_"
                   placeholder="支持批量上传文件，文件格式不限，最多只能上传 10 份文件"
@@ -161,9 +161,13 @@
                   style="margin-left: 20px; width: 100%"
                 ></t-upload>
               </t-form-item>
-              <t-button style="width: 200px; display: inline; margin-top: 20px" @click="submitHomework">{{
-                homeworkInfo.student_homework_finish_status === 1 ? '更新作业' : '提交作业'
-              }}</t-button>
+              <t-button
+                v-if="!homeworkInfo.homework_expire"
+                style="width: 200px; display: inline; margin-top: 20px"
+                @click="submitHomework"
+              >
+                {{ homeworkInfo.student_homework_finish_status === 1 ? '更新作业' : '提交作业' }}
+              </t-button>
             </t-form>
           </div>
         </div>
@@ -296,6 +300,11 @@ const getHomeworkInfo_ = function () {
   getHomeworkInfo(chooseRole.value.roleId, chooseClass.value.class_id, props.teacherHomeworkId)
     .then((resp) => {
       // @ts-ignore
+      console.log(resp.data.data)
+      console.log(resp.data.data)
+      console.log(resp.data.data)
+      console.log(resp.data.data)
+      console.log(resp.data.data)
       homeworkInfo.value = resp.data.data
       // @ts-ignore
       if (homeworkInfo.value.student_homework_finish_status === 1) {

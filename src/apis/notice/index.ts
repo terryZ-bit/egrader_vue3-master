@@ -33,3 +33,13 @@ export function deleteNotice(noticeId) {
     },
   })
 }
+
+export function stuListNotice(classId) {
+  return request({
+    url: 'noticeStu.LATEST/selectNotice/',
+    method: 'POST',
+    data: {
+      class_id: classId,
+    },
+  })
+}

@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { listNotice } from '@/apis/notice'
+import { listNotice, stuListNotice } from '@/apis/notice'
 
 export const useNoticeStore = defineStore('notice', {
   state: () => ({
@@ -29,13 +29,24 @@ export const useNoticeStore = defineStore('notice', {
     },
     flushNoticeByCourse(courseId) {
       listNotice(courseId)
-        .then((resp) => {
-          // @ts-ignore
-          this.noticeList = resp.data.data
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((resp) => {
+            // @ts-ignore
+            this.noticeList = resp.data.data
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      return true
+    },
+    flushNoticeByClass(classId) {
+      stuListNotice(classId)
+          .then((resp) => {
+            // @ts-ignore
+            this.noticeList = resp.data.data
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       return true
     },
   },

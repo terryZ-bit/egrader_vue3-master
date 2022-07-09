@@ -15,7 +15,19 @@
         <vxe-column title="操作" width="110px">
           <template #default="{ row }">
             <t-popup content="查看详情">
-              <t-button theme="default" variant="dashed" @click="detailHomework(row)"> 去完成 </t-button>
+              <t-button
+                  v-if="row.homework_expire"
+                  theme="default"
+                  variant="dashed"
+                  :disabled="row.rate_flag === 1"
+                  style="color: red"
+                  @click="detailHomework(row)"
+              >
+                已截止
+              </t-button>
+              <t-button v-else theme="default" variant="dashed" @click="detailHomework(row)">
+                {{ row.finish_status ? '已完成' : '去完成' }}
+              </t-button>
             </t-popup>
           </template>
         </vxe-column>
@@ -24,13 +36,23 @@
     <t-card title="互评任务" style="margin: 30px" bordered header-bordered :shadow="true">
       <vxe-table :data="homeworkRateEachList" align="center" :loading="homeworkPreviewLoading">
         <vxe-column type="seq" width="60"></vxe-column>
-        <vxe-column title="作业标题" field="name"></vxe-column>
-        <vxe-column title="互评任务总数" field="sum"></vxe-column>
-        <vxe-column title="互评任务剩余数量" field="left"></vxe-column>
+        <vxe-column title="作业标题" field="teacher_homework_name"></vxe-column>
+        <vxe-column title="截止时间" field="rate_each_end_time" :formatter="formatTime"></vxe-column>
+        <vxe-column title="互评任务总数" field="rate_num"></vxe-column>
+        <vxe-column title="互评任务剩余数量" field="rate_left"></vxe-column>
         <vxe-column title="操作" width="110px">
           <template #default="{ row }">
             <t-popup content="查看详情">
-              <t-button theme="default" variant="dashed" @click="detailRateEach(row)"> 去评价 </t-button>
+              <t-button
+                  v-if="row.rate_expire"
+                  theme="default"
+                  variant="dashed"
+                  style="color: red"
+                  @click="detailRateEach(row)"
+              >
+                已截止
+              </t-button>
+              <t-button v-else theme="default" variant="dashed" @click="detailRateEach(row)"> 去评价 </t-button>
             </t-popup>
           </template>
         </vxe-column>
@@ -52,6 +74,7 @@ import { storeToRefs } from 'pinia'
 import { VxeColumnPropTypes } from 'vxe-table'
 import XEUtils from 'xe-utils'
 import router from '@/router'
+import { getEvalTask } from '@/apis/mutual_operation/studentEach'
 
 const chooseStore = useChooseStore()
 // eslint-disable-next-line no-unused-vars
@@ -59,8 +82,6 @@ const { chooseClass, chooseCourse, chooseRole } = storeToRefs(chooseStore)
 const homeworkPreviewLoading = ref(false)
 const homeworkRateEachList = ref([])
 const teacherHomeworkList = ref([])
-const rateEachStore = useRateEachStore()
-const { rateEachList } = storeToRefs(rateEachStore)
 const typeYesOrNoList = [
   { label: '是', value: 1 },
   { label: '否', value: 0 },
@@ -74,18 +95,27 @@ const formatYesOrNo: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
   return item ? item.label : ''
 }
 const getTeacherHomework = function () {
+  console.log(chooseClass.value)
   homeworkPreviewLoading.value = true
   // @ts-ignore
   listAllHomeworks(chooseRole.value.roleId, chooseClass.value.class_id)
-    .then((resp) => {
-      console.log(resp)
-      // @ts-ignore
-      teacherHomeworkList.value = resp.data.data
-      homeworkRateEachList.value = rateEachList.value
-    })
-    .finally(() => {
-      homeworkPreviewLoading.value = false
-    })
+      .then((resp) => {
+        console.log(resp)
+        console.log(resp)
+        console.log(resp)
+        console.log(resp)
+        // @ts-ignore
+        teacherHomeworkList.value = resp.data.data
+      })
+      .finally(() => {
+        homeworkPreviewLoading.value = false
+      })
+  getEvalTask(77, 23)
+      .then((res) => {
+        console.log(res.data.data)
+        homeworkRateEachList.value = res.data.data
+      })
+      .finally(() => {})
 }
 
 const detailHomework = function (row) {
@@ -93,7 +123,7 @@ const detailHomework = function (row) {
 }
 
 const detailRateEach = function (row) {
-  router.push({ name: 'stuRateEach', params: { rateParam: row.teacherHomeworkId } })
+  router.push({ name: 'stuRateEach', params: { rateParam: row.teacher_homework_id } })
 }
 onMounted(() => {
   getTeacherHomework()

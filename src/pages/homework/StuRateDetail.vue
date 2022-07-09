@@ -9,10 +9,10 @@
       <div style="display: flex; flex-direction: column">
         <div>
           <t-button
-            theme="primary"
-            variant="text"
-            style="float: left; display: inline"
-            @click="$router.push({ name: 'stuRateEach', params: { rateParam: props.homeworkParam } })"
+              theme="primary"
+              variant="text"
+              style="float: left; display: inline"
+              @click="$router.push({ name: 'stuRateEach', params: { rateParam: props.homeworkParam } })"
           >
             <template #icon>
               <t-icon name="rollback"></t-icon>
@@ -39,7 +39,7 @@
           </t-row>
           <vxe-table style="margin-left: 20px; margin-top: 10px" :data="fileList">
             <vxe-column type="seq" width="60"></vxe-column>
-            <vxe-column field="fileName" title="文件名称"></vxe-column>
+            <vxe-column field="fileName" title=""></vxe-column>
             <vxe-column title="操作" width="110px">
               <template #default="{ row }">
                 <t-popup content="下载">
@@ -58,15 +58,16 @@
               </div>
             </t-col>
           </t-row>
-          <div v-for="item in senDetail" :key="item.id">
+          <div v-for="(item, index) in homeworkInfo.score_detail_list" :key="item.id">
             <t-form label-align="left" style="margin-left: 20px">
               <t-form-item label="得分点">
-                <t-tag>第{{ item.question_id }}得分点</t-tag>
+                <t-tag>第{{ index + 1 }}题得分</t-tag>
               </t-form-item>
-              <t-form-item label="打分标准">{{ item.question_name }}</t-form-item>
+              <t-form-item label="评分标准">{{ item.question_name }}</t-form-item>
               <t-form-item label="分数上限">{{ item.score_max }}</t-form-item>
+              <t-input  auto-width />
               <t-form-item label="打分">
-                <t-input-number></t-input-number>
+                <t-input-number v-model="senDetail[index].score" :max="item.score_max"></t-input-number>
               </t-form-item>
             </t-form>
             <t-divider></t-divider>
@@ -84,11 +85,15 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import { useRateEachStore } from '@/store'
+import { useRateEachStore, useChooseStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import { getTeacherHomeworkFile } from '@/apis/homework/teacherHomework'
 import router from '@/router'
+import { getHomeworkInfo } from '@/apis/homework/studentHomework'
+import { uploadEach } from '@/apis/mutual_operation/studentEach'
+
+const stuHomeworkDetailLoading = ref(false)
 
 interface Props {
   rateParam?: string
@@ -99,30 +104,67 @@ const props = withDefaults(defineProps<Props>(), {
   homeworkParam: '',
 })
 const rateEachStore = useRateEachStore()
+const chooseStore = useChooseStore()
+const { chooseRole, chooseClass } = storeToRefs(chooseStore)
+
 const fileList = ref([])
+const senDetail = ref([])
 const homeworkMessage = ref('')
+const homeworkInfo = ref({})
+
 // eslint-disable-next-line no-unused-vars
-const { rateDetailJson, senDetail } = storeToRefs(rateEachStore)
+const { rateDetailJson } = storeToRefs(rateEachStore)
 const downloadTHomeworkFile = function (row) {
   getTeacherHomeworkFile(row.id)
 }
 const submitDetail = function () {
-  rateEachStore.setDetailStatus(props.rateParam)
-  console.log('success')
+  console.log(rateDetailJson.value[props.rateParam])
+  const rateDetailList = rateDetailJson.value[props.rateParam].rate_each_detail
+  const list = []
+  list.push({ rate_each_id: props.rateParam })
+  for (const i in rateDetailList) {
+    list.push({
+      rate_each_detail_id: rateDetailList[i].id,
+      teacher_homework_detail_id: rateDetailList[i].teacher_homework_detail_id,
+      score: senDetail.value[i].score,
+    })
+  }
+  console.log(list)
+  uploadEach(list)
+      .then((resp) => {
+        console.log('upload success!')
+      })
+      .finally(() => {})
   router.push({ name: 'stuRateEach', params: { rateParam: props.homeworkParam } })
 }
+const getHomeworkInfo_ = function () {
+  stuHomeworkDetailLoading.value = true
+  // @ts-ignore
+  getHomeworkInfo(chooseRole.value.roleId, chooseClass.value.class_id, rateDetailJson.value.teacher_homework_id)
+      .then((resp) => {
+        // @ts-ignore
+        homeworkInfo.value = resp.data.data
+        // @ts-ignore
+        if (homeworkInfo.value.student_homework_finish_status === 1) {
+          // @ts-ignore
+          homeworkMessage.value = homeworkInfo.value.student_homework_message
+        }
+        console.log('1111', homeworkInfo.value)
+      })
+      .finally(() => {
+        stuHomeworkDetailLoading.value = false
+      })
+}
+
 onMounted(() => {
-  rateDetailJson.value['97'].forEach((item) => {
-    if (item.id === props.rateParam) {
-      fileList.value = [
-        {
-          id: props.rateParam,
-          fileName: item.fileName,
-        },
-      ]
-      homeworkMessage.value = item.homework_message
-    }
-  })
+  fileList.value = rateDetailJson.value[props.rateParam].homework_oss
+  senDetail.value = rateDetailJson.value[props.rateParam].rate_each_detail
+  console.log(fileList.value)
+  console.log(fileList.value)
+  console.log(senDetail.value)
+  console.log(senDetail.value)
+
+  getHomeworkInfo_()
 })
 </script>
 
