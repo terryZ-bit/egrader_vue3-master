@@ -1,7 +1,6 @@
 import { store } from '@/store'
 import { sessionStorage } from '@/utils/storage'
 import { listCourse } from '@/apis/course'
-import { MessagePlugin } from 'tdesign-vue-next'
 import { defineStore } from 'pinia'
 export const useChooseStore = defineStore('choose', {
   state: () => ({
@@ -27,8 +26,8 @@ export const useChooseStore = defineStore('choose', {
     },
   },
   actions: {
-    setChooseRole(roleId, roleType) {
-      this.chooseRole = { roleId: roleId, roleType: roleType }
+    setChooseRole(roleId, roleType, roleName) {
+      this.chooseRole = { roleId, roleType, roleName }
     },
     setCourse(course) {
       this.chooseCourse = course

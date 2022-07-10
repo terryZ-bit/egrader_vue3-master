@@ -305,15 +305,28 @@ const roleLogin = async function (course) {
   if (course.hasOwnProperty('teacher_id')) {
     console.log('教师登录')
     const teacherId = course.teacher_id
+    let Name
+    teacherList.value.forEach((item) => {
+      if (item.id === teacherId) {
+        Name = item.name
+      }
+    })
     chooseStore.setCourse(course)
-    chooseStore.setChooseRole(teacherId, 'teacher')
+    chooseStore.setChooseRole(teacherId, 'teacher', Name)
     console.log(course.id)
     await chooseStore.flushChooseClass()
     await router.push({ name: 'teacherCourse' })
     // eslint-disable-next-line no-prototype-builtins
   } else if (course.hasOwnProperty('student_id')) {
     console.log('学生登录')
-    chooseStore.setChooseRole(course.student_id, 'student')
+    const studentId = course.student_id
+    let Name
+    studentList.value.forEach((item) => {
+      if (item.id === studentId) {
+        Name = item.name
+      }
+    })
+    chooseStore.setChooseRole(course.student_id, 'student', Name)
     chooseStore.setClass(course)
     await router.push({ name: 'stuHomework' })
   }
