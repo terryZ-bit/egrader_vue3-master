@@ -16,12 +16,12 @@
           <template #default="{ row }">
             <t-popup content="查看详情">
               <t-button
-                  v-if="row.homework_expire"
-                  theme="default"
-                  variant="dashed"
-                  :disabled="row.rate_flag === 1"
-                  style="color: red"
-                  @click="detailHomework(row)"
+                v-if="row.homework_expire"
+                theme="default"
+                variant="dashed"
+                :disabled="row.rate_flag === 1"
+                style="color: red"
+                @click="detailHomework(row)"
               >
                 已截止
               </t-button>
@@ -38,17 +38,17 @@
         <vxe-column type="seq" width="60"></vxe-column>
         <vxe-column title="作业标题" field="teacher_homework_name"></vxe-column>
         <vxe-column title="截止时间" field="rate_each_end_time" :formatter="formatTime"></vxe-column>
-        <vxe-column title="互评任务总数" field="rate_num"></vxe-column>
+        <vxe-column title="互评任务总数" field="rate_sum"></vxe-column>
         <vxe-column title="互评任务剩余数量" field="rate_left"></vxe-column>
         <vxe-column title="操作" width="110px">
           <template #default="{ row }">
             <t-popup content="查看详情">
               <t-button
-                  v-if="row.rate_expire"
-                  theme="default"
-                  variant="dashed"
-                  style="color: red"
-                  @click="detailRateEach(row)"
+                v-if="row.rate_expire"
+                theme="default"
+                variant="dashed"
+                style="color: red"
+                @click="detailRateEach(row)"
               >
                 已截止
               </t-button>
@@ -99,23 +99,20 @@ const getTeacherHomework = function () {
   homeworkPreviewLoading.value = true
   // @ts-ignore
   listAllHomeworks(chooseRole.value.roleId, chooseClass.value.class_id)
-      .then((resp) => {
-        console.log(resp)
-        console.log(resp)
-        console.log(resp)
-        console.log(resp)
-        // @ts-ignore
-        teacherHomeworkList.value = resp.data.data
-      })
-      .finally(() => {
-        homeworkPreviewLoading.value = false
-      })
-  getEvalTask(77, 23)
-      .then((res) => {
-        console.log(res.data.data)
-        homeworkRateEachList.value = res.data.data
-      })
-      .finally(() => {})
+    .then((resp) => {
+      // @ts-ignore
+      teacherHomeworkList.value = resp.data.data
+    })
+    .finally(() => {
+      homeworkPreviewLoading.value = false
+    })
+  // @ts-ignore
+  getEvalTask(chooseClass.value.class_id, chooseClass.value.student_id)
+    .then((res) => {
+      // @ts-ignore
+      homeworkRateEachList.value = res.data.data
+    })
+    .finally(() => {})
 }
 
 const detailHomework = function (row) {
