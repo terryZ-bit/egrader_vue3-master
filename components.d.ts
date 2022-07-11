@@ -47,7 +47,6 @@ declare module '@vue/runtime-core' {
     TTabs: typeof import('tdesign-vue-next')['Tabs']
     TTag: typeof import('tdesign-vue-next')['Tag']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
-    TUpload: typeof import('tdesign-vue-next')['Upload']
   }
 }
 
