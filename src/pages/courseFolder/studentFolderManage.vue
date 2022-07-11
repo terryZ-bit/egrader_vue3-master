@@ -57,6 +57,7 @@ const { chooseCourse, chooseRole, chooseClass } = storeToRefs(chooseStore)
 const courseFileList = ref([])
 
 onMounted(() => {
+  // @ts-ignore
   studentGetCourseFiles(chooseClass.value.class_id)
     .then((resp) => {
       // @ts-ignore

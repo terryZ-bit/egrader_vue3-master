@@ -59,6 +59,16 @@
         </template>
       </t-dialog>
     </t-card>
+    <t-card title="加入管理" style="margin: 30px 30px" header-bordered bordered>
+      <div class="inter-manage-card">
+        <div>
+          <p style="float: left">目前状态：</p>
+        </div>
+        <div>
+          <t-button>允许加入</t-button>
+        </div>
+      </div>
+    </t-card>
   </div>
 </template>
 
@@ -163,6 +173,11 @@ const newClass = async function () {
       border-radius: @border-radius-50;
       background: @success-color-5;
     }
+  }
+
+  .inter-manage-card {
+    display: flex;
+    flex-direction: column;
   }
 }
 </style>

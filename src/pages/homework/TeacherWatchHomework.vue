@@ -62,7 +62,7 @@ export default {
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { teacherGetAllHomework } from '@/apis/homework/teacherHomework'
-import { formatYesOrNo, formatNullToCh } from '@/utils/format'
+import { formatYesOrNo } from '@/utils/format'
 import router from '@/router'
 
 interface Props {

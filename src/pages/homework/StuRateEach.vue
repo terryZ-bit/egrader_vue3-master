@@ -9,10 +9,10 @@
       <div style="display: flex; flex-direction: column">
         <div>
           <t-button
-              theme="primary"
-              variant="text"
-              style="float: left; display: inline"
-              @click="$router.push({ name: 'stuHomework' })"
+            theme="primary"
+            variant="text"
+            style="float: left; display: inline"
+            @click="$router.push({ name: 'stuHomework' })"
           >
             <template #icon>
               <t-icon name="rollback"></t-icon>
@@ -117,21 +117,21 @@
               <vxe-column title="操作" width="140px">
                 <template #default="{ row }">
                   <t-button
-                      v-if="homeworkInfo.rate_expire"
-                      theme="default"
-                      variant="dashed"
-                      disabled
-                      style="color: #ff5959"
-                      @click="detailHomework(row)"
+                    v-if="homeworkInfo.rate_expire"
+                    theme="default"
+                    variant="dashed"
+                    disabled
+                    style="color: #ff5959"
+                    @click="detailHomework(row)"
                   >
                     已截止
                   </t-button>
                   <t-button
-                      v-else
-                      theme="default"
-                      variant="dashed"
-                      :disabled="row.rate_flag === 1"
-                      @click="detailHomework(row)"
+                    v-else
+                    theme="default"
+                    variant="dashed"
+                    :disabled="row.rate_flag === 1"
+                    @click="detailHomework(row)"
                   >
                     {{ row.rate_flag === 1 ? '已完成' : '去评分' }}
                   </t-button>
@@ -188,38 +188,43 @@ const getHomeworkInfo_ = function () {
   stuHomeworkDetailLoading.value = true
   // @ts-ignore
   getHomeworkInfo(chooseRole.value.roleId, chooseClass.value.class_id, props.rateParam)
-      .then((resp) => {
-        console.log(resp)
-        // @ts-ignore
-        homeworkInfo.value = resp.data.data
-        // @ts-ignore
-        // if (homeworkInfo.value) {
-        //
-        // }
-      })
-      .finally(() => {
-        stuHomeworkDetailLoading.value = false
-      })
+    .then((resp) => {
+      console.log(resp)
+      // @ts-ignore
+      homeworkInfo.value = resp.data.data
+      // @ts-ignore
+      // if (homeworkInfo.value) {
+      //
+      // }
+    })
+    .finally(() => {
+      stuHomeworkDetailLoading.value = false
+    })
+  // @ts-ignore
   getRaths(props.rateParam, chooseClass.value.student_id)
-      .then((res) => {
-        console.log('0000000000')
-        console.log('0000000000')
-        console.log('0000000000')
-        console.log('0000000000')
-        console.log('0000000000')
-        console.log(res.data.data)
-        console.log(rateDetailJson.value)
-        rateDetailJson.value = {}
-        fakeRate.value = res.data.data
-        for (const item of res.data.data) {
-          rateDetailJson.value[item.rate_each_id.toString()] = {
-            homework_oss: item.homework_oss,
-            rate_each_detail: item.rate_each_detail,
-          }
-          rateDetailJson.value.teacher_homework_id = props.rateParam
+    .then((res) => {
+      console.log('0000000000')
+      console.log('0000000000')
+      console.log('0000000000')
+      console.log('0000000000')
+      console.log('0000000000')
+      // @ts-ignore
+      console.log(res.data.data)
+      console.log(rateDetailJson.value)
+      rateDetailJson.value = {}
+      // @ts-ignore
+      fakeRate.value = res.data.data
+      // @ts-ignore
+      for (const item of res.data.data) {
+        rateDetailJson.value[item.rate_each_id.toString()] = {
+          homework_oss: item.homework_oss,
+          rate_each_detail: item.rate_each_detail,
         }
-      })
-      .finally(() => {})
+        // @ts-ignore
+        rateDetailJson.value.teacher_homework_id = props.rateParam
+      }
+    })
+    .finally(() => {})
 }
 
 const detailHomework = function (row) {

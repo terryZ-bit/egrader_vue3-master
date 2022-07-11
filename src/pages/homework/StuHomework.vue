@@ -16,12 +16,12 @@
           <template #default="{ row }">
             <t-popup content="查看详情">
               <t-button
-                  v-if="row.homework_expire"
-                  theme="default"
-                  variant="dashed"
-                  :disabled="row.rate_flag === 1"
-                  style="color: red"
-                  @click="detailHomework(row)"
+                v-if="row.homework_expire"
+                theme="default"
+                variant="dashed"
+                :disabled="row.rate_flag === 1"
+                style="color: red"
+                @click="detailHomework(row)"
               >
                 已截止
               </t-button>
@@ -44,11 +44,11 @@
           <template #default="{ row }">
             <t-popup content="查看详情">
               <t-button
-                  v-if="row.rate_expire"
-                  theme="default"
-                  variant="dashed"
-                  style="color: red"
-                  @click="detailRateEach(row)"
+                v-if="row.rate_expire"
+                theme="default"
+                variant="dashed"
+                style="color: red"
+                @click="detailRateEach(row)"
               >
                 已截止
               </t-button>
@@ -99,23 +99,25 @@ const getTeacherHomework = function () {
   homeworkPreviewLoading.value = true
   // @ts-ignore
   listAllHomeworks(chooseRole.value.roleId, chooseClass.value.class_id)
-      .then((resp) => {
-        console.log(resp)
-        console.log(resp)
-        console.log(resp)
-        console.log(resp)
-        // @ts-ignore
-        teacherHomeworkList.value = resp.data.data
-      })
-      .finally(() => {
-        homeworkPreviewLoading.value = false
-      })
+    .then((resp) => {
+      console.log(resp)
+      console.log(resp)
+      console.log(resp)
+      console.log(resp)
+      // @ts-ignore
+      teacherHomeworkList.value = resp.data.data
+    })
+    .finally(() => {
+      homeworkPreviewLoading.value = false
+    })
   getEvalTask(77, 23)
-      .then((res) => {
-        console.log(res.data.data)
-        homeworkRateEachList.value = res.data.data
-      })
-      .finally(() => {})
+    .then((res) => {
+      // @ts-ignore
+      console.log(res.data.data)
+      // @ts-ignore
+      homeworkRateEachList.value = res.data.data
+    })
+    .finally(() => {})
 }
 
 const detailHomework = function (row) {

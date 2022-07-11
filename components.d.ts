@@ -5,6 +5,7 @@ import '@vue/runtime-core'
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DoughnutRounded: typeof import('./src/components/echarts/DoughnutRounded.vue')['default']
     HomePageHeader: typeof import('./src/components/header/HomePageHeader.vue')['default']
     PublicFooter: typeof import('./src/components/footer/PublicFooter.vue')['default']
     PublicHeader: typeof import('./src/components/header/PublicHeader.vue')['default']
@@ -14,8 +15,11 @@ declare module '@vue/runtime-core' {
     TBadge: typeof import('tdesign-vue-next')['Badge']
     TButton: typeof import('tdesign-vue-next')['Button']
     TCard: typeof import('tdesign-vue-next')['Card']
+    TCheckbox: typeof import('tdesign-vue-next')['Checkbox']
     TCol: typeof import('tdesign-vue-next')['Col']
     TContent: typeof import('tdesign-vue-next')['Content']
+    TDatePicker: typeof import('tdesign-vue-next')['DatePicker']
+    TDialog: typeof import('tdesign-vue-next')['Dialog']
     TDivider: typeof import('tdesign-vue-next')['Divider']
     TDrawer: typeof import('tdesign-vue-next')['Drawer']
     TDropdown: typeof import('tdesign-vue-next')['Dropdown']
@@ -39,6 +43,8 @@ declare module '@vue/runtime-core' {
     TSelect: typeof import('tdesign-vue-next')['Select']
     TSkeleton: typeof import('tdesign-vue-next')['Skeleton']
     TSubmenu: typeof import('tdesign-vue-next')['Submenu']
+    TTabPanel: typeof import('tdesign-vue-next')['TabPanel']
+    TTabs: typeof import('tdesign-vue-next')['Tabs']
     TTag: typeof import('tdesign-vue-next')['Tag']
     TTextarea: typeof import('tdesign-vue-next')['Textarea']
     TUpload: typeof import('tdesign-vue-next')['Upload']
