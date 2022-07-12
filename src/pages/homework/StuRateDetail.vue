@@ -26,7 +26,7 @@
             <t-col span="12">
               <div class="teacher-homework-detail-span-left">
                 <span>作业留言：</span>
-                <i>{{ homeworkMessage }}</i>
+                <i>{{ homeworkInfo.student_homework_message }}</i>
               </div>
             </t-col>
           </t-row>
@@ -65,7 +65,6 @@
               </t-form-item>
               <t-form-item label="评分标准">{{ item.question_name }}</t-form-item>
               <t-form-item label="分数上限">{{ item.score_max }}</t-form-item>
-              <t-input auto-width />
               <t-form-item label="打分">
                 <t-input-number v-model="senDetail[index].score" :max="item.score_max"></t-input-number>
               </t-form-item>
