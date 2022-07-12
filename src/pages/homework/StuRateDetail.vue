@@ -9,10 +9,10 @@
       <div style="display: flex; flex-direction: column">
         <div>
           <t-button
-              theme="primary"
-              variant="text"
-              style="float: left; display: inline"
-              @click="$router.push({ name: 'stuRateEach', params: { rateParam: props.homeworkParam } })"
+            theme="primary"
+            variant="text"
+            style="float: left; display: inline"
+            @click="$router.push({ name: 'stuRateEach', params: { rateParam: props.homeworkParam } })"
           >
             <template #icon>
               <t-icon name="rollback"></t-icon>
@@ -26,7 +26,7 @@
             <t-col span="12">
               <div class="teacher-homework-detail-span-left">
                 <span>作业留言：</span>
-                <i>{{ homeworkMessage }}</i>
+                <i>{{ homeworkInfo.student_homework_message }}</i>
               </div>
             </t-col>
           </t-row>
@@ -65,7 +65,6 @@
               </t-form-item>
               <t-form-item label="评分标准">{{ item.question_name }}</t-form-item>
               <t-form-item label="分数上限">{{ item.score_max }}</t-form-item>
-              <t-input  auto-width />
               <t-form-item label="打分">
                 <t-input-number v-model="senDetail[index].score" :max="item.score_max"></t-input-number>
               </t-form-item>
@@ -131,29 +130,29 @@ const submitDetail = function () {
   }
   console.log(list)
   uploadEach(list)
-      .then((resp) => {
-        console.log('upload success!')
-      })
-      .finally(() => {})
+    .then((resp) => {
+      console.log('upload success!')
+    })
+    .finally(() => {})
   router.push({ name: 'stuRateEach', params: { rateParam: props.homeworkParam } })
 }
 const getHomeworkInfo_ = function () {
   stuHomeworkDetailLoading.value = true
   // @ts-ignore
   getHomeworkInfo(chooseRole.value.roleId, chooseClass.value.class_id, rateDetailJson.value.teacher_homework_id)
-      .then((resp) => {
+    .then((resp) => {
+      // @ts-ignore
+      homeworkInfo.value = resp.data.data
+      // @ts-ignore
+      if (homeworkInfo.value.student_homework_finish_status === 1) {
         // @ts-ignore
-        homeworkInfo.value = resp.data.data
-        // @ts-ignore
-        if (homeworkInfo.value.student_homework_finish_status === 1) {
-          // @ts-ignore
-          homeworkMessage.value = homeworkInfo.value.student_homework_message
-        }
-        console.log('1111', homeworkInfo.value)
-      })
-      .finally(() => {
-        stuHomeworkDetailLoading.value = false
-      })
+        homeworkMessage.value = homeworkInfo.value.student_homework_message
+      }
+      console.log('1111', homeworkInfo.value)
+    })
+    .finally(() => {
+      stuHomeworkDetailLoading.value = false
+    })
 }
 
 onMounted(() => {

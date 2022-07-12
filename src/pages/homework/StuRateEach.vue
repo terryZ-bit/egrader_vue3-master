@@ -202,13 +202,6 @@ const getHomeworkInfo_ = function () {
     })
   getRaths(props.rateParam, chooseClass.value.student_id)
     .then((res) => {
-      console.log('0000000000')
-      console.log('0000000000')
-      console.log('0000000000')
-      console.log('0000000000')
-      console.log('0000000000')
-      console.log(res.data.data)
-      console.log(rateDetailJson.value)
       rateDetailJson.value = {}
       fakeRate.value = res.data.data
       for (const item of res.data.data) {
@@ -226,6 +219,7 @@ const detailHomework = function (row) {
   router.push({ name: 'stuRateDetail', params: { rateParam: row.rate_each_id, homeworkParam: props.rateParam } })
 }
 onMounted(() => {
+  homeworkInfo.value = {}
   getHomeworkInfo_()
   console.log(props.rateParam)
 })
