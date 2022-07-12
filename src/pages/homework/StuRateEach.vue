@@ -200,15 +200,19 @@ const getHomeworkInfo_ = function () {
     .finally(() => {
       stuHomeworkDetailLoading.value = false
     })
+  // @ts-ignore
   getRaths(props.rateParam, chooseClass.value.student_id)
     .then((res) => {
       rateDetailJson.value = {}
+      // @ts-ignore
       fakeRate.value = res.data.data
+      // @ts-ignore
       for (const item of res.data.data) {
         rateDetailJson.value[item.rate_each_id.toString()] = {
           homework_oss: item.homework_oss,
           rate_each_detail: item.rate_each_detail,
         }
+        // @ts-ignore
         rateDetailJson.value.teacher_homework_id = props.rateParam
       }
     })

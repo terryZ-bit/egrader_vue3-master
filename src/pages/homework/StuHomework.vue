@@ -69,6 +69,7 @@ export default {
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { listAllHomeworks } from '@/apis/homework/studentHomework'
+// eslint-disable-next-line no-unused-vars
 import { useChooseStore, useRateEachStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { VxeColumnPropTypes } from 'vxe-table'
