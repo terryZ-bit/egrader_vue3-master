@@ -6,9 +6,6 @@ import { request } from '@/utils/request'
  * @param name
  * @param homeworkIntroduction
  * @param scoreMax
- * @param scoreDetailFlag
- * @param rateEachFlag
- * @param endTime
  * @param classList
  */
 export function createHomeworkBody(teacherId, name, homeworkIntroduction, scoreMax, classList) {
@@ -169,7 +166,16 @@ export function teacherUpdateStudentGrade(homeworkId, grade) {
   })
 }
 
-export function confirmTeacherHomework(teacherHomeworkId, endTime, rateEndTime, classList, rateEachFlag) {
+/**
+ * 教师确认发布作业
+ * @param teacherHomeworkId
+ * @param endTime
+ * @param rateEndTime
+ * @param classList
+ * @param rateEachFlag
+ * @param rateEachNum
+ */
+export function confirmTeacherHomework(teacherHomeworkId, endTime, rateEndTime, classList, rateEachFlag, rateEachNum) {
   return rateEachFlag
     ? request({
         url: 'egraderBackend.LATEST/homeworkService/confirmTeacherHomework',
@@ -179,6 +185,7 @@ export function confirmTeacherHomework(teacherHomeworkId, endTime, rateEndTime, 
           end_time: endTime,
           class_list: classList,
           rate_each_end_time: rateEndTime,
+          rate_each_num: rateEachNum,
         },
       })
     : request({
