@@ -88,7 +88,7 @@ const typeYesOrNoList = [
   { label: '否', value: 0 },
 ]
 const formatTime: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
-  return XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:ss')
+  return XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:mm:ss')
 }
 
 const formatYesOrNo: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
