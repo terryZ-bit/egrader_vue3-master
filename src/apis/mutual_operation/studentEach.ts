@@ -20,12 +20,22 @@ export function getRaths(teacherHomeworkId, studentId) {
     },
   })
 }
-export function uploadEach(rateEachList) {
-  return request({
-    url: '/mutual_operation/upload_each/',
-    method: 'POST',
-    data: {
-      rate_each_list: rateEachList,
-    },
-  })
+
+export function uploadEach(rateEachList, finalScore, rateEachId, scoreDetailFlag) {
+  return scoreDetailFlag
+    ? request({
+        url: '/mutual_operation/upload_each/',
+        method: 'POST',
+        data: {
+          rate_each_list: rateEachList,
+        },
+      })
+    : request({
+        url: '/mutual_operation/upload_each/',
+        method: 'POST',
+        data: {
+          final_score: finalScore,
+          rate_each_id: rateEachId,
+        },
+      })
 }
