@@ -4,8 +4,9 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-import { onMounted } from 'vue'
+import { onMounted, provide } from 'vue'
 import { afterFlushToSession, beforeFlushToSession } from '@/store/toSession'
+import * as echarts from 'echarts'
 // import axios from 'axios'
 
 onMounted(() => {
@@ -22,6 +23,8 @@ window.onbeforeunload = function () {
   beforeFlushToSession()
   console.log('在刷新前执行')
 }
+
+provide('echarts', echarts)
 </script>
 <style lang="less">
 @import './style/variables.less';

@@ -1,35 +1,35 @@
 <template>
   <div id="stu-aside">
     <t-menu
-        id="teacher-aside"
-        theme="light"
-        value="teacherBasePage"
-        style="margin-right: 50px"
-        height="550px"
-        :collapsed="collapsed"
-        @change="menuChange"
+      id="teacher-aside"
+      theme="light"
+      value="teacherBasePage"
+      style="margin-right: 50px"
+      height="550px"
+      :collapsed="collapsed"
+      @change="menuChange"
     >
       <template #logo>
         <span v-if="showLogo" class="header-logo-container">
           <img
-              src="../../assets/logo/logo_big.png"
-              alt="404"
-              style="height: 22px; width: 125px; margin-left: 20px; margin-top: 20px; margin-bottom: 9.3px"
+            src="../../assets/logo/logo_big.png"
+            alt="404"
+            style="height: 22px; width: 125px; margin-left: 20px; margin-top: 20px; margin-bottom: 9.3px"
           />
         </span>
         <span v-else>
           <img
-              alt="404"
-              src="../../assets/logo/logo_small.png"
-              style="height: 20px; width: 20px; margin-left: 20px; margin-top: 10px"
+            alt="404"
+            src="../../assets/logo/logo_small.png"
+            style="height: 20px; width: 20px; margin-left: 20px; margin-top: 10px"
           />
         </span>
       </template>
-      <t-menu-item value="stuDashboard">
+      <t-menu-item value="stuBasePage">
         <template #icon>
           <t-icon name="desktop" />
         </template>
-        工作台
+        概览台
       </t-menu-item>
       <t-menu-item value="stuHomework">
         <template #icon>

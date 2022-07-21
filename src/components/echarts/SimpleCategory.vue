@@ -1,8 +1,10 @@
 <!--
-  封装了基本圆环图
--->
+    @author: Terry_z
+    @date: 2022/7/20 - 20:21
+    @fileName: SimpleCategory
+ -->
 <template>
-  <div id="doughnut-rounded">
+  <div id="simple-category">
     <EChart :option="option"></EChart>
   </div>
 </template>
@@ -18,24 +20,18 @@ const option = ref({
   title: {
     text: title,
   },
-  legend: {
-    show: true,
-    left: 'left',
-    top: '30px',
-    orient: 'vertical',
+  xAxis: {
+    type: 'category',
+    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+  },
+  yAxis: {
+    type: 'value',
   },
   series: [
     {
-      type: 'pie',
-      radius: ['40%', '70%'],
-      left: 'right',
-      top: 'middle',
-      height: '160px',
-      width: '160px',
-      data,
-      label: {
-        show: false,
-      },
+      data: data,
+      type: 'line',
+      smooth: true,
     },
   ],
   grid: {
@@ -48,7 +44,7 @@ const option = ref({
 })
 </script>
 <style lang="less">
-#doughnut-rounded {
+#simple-category {
   height: 100%;
   width: 100%;
 }

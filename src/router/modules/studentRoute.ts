@@ -36,5 +36,10 @@ export default [
     component: () => import('@/pages/courseFolder/studentFolderManage.vue'),
     props: true,
   },
+  {
+    path: 'stuBasePage',
+    name: 'stuBasePage',
+    component: () => import('@/pages/base/stuBasePage.vue'),
+  },
   // TODO: 每新增一个base页面的子页面，在这里添加
 ]
