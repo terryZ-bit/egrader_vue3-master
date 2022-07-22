@@ -292,6 +292,7 @@ const submitHomework = function () {
     () => {
       getHomeworkInfo_()
       files_.value = []
+      MessagePlugin.success('更新成功')
     },
   )
 }
