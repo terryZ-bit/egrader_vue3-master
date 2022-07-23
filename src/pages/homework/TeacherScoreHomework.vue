@@ -82,6 +82,25 @@
             </t-row>
           </div>
         </t-skeleton>
+        <t-divider animation="flashed"></t-divider>
+        <p style="float: left; margin-right: auto; padding-left: 20px; font-size: medium">互评情况</p>
+        <t-skeleton animation="flashed" :loading="rateEachLoadingControl">
+          <div style="margin-left: 20px; margin-top: 20px">
+            <t-collapse v-for="item in rateEachList" :key="item.id">
+              <t-collapse-panel>
+                <template #header>
+                  {{ item.student_name }} &nbsp; &nbsp; {{ item.student_number }} &nbsp; &nbsp; 的评分 &nbsp; &nbsp;
+                  &nbsp; &nbsp; 原始评分：{{ item.grade }} &nbsp; &nbsp; 可信度：
+                  {{ item.reliability }}
+                </template>
+                <vxe-table :loading="rateEachLoadingControl" border :data="item.rate_each_detail">
+                  <vxe-column type="seq" width="60"></vxe-column>
+                  <vxe-column field="grade" title="分数"></vxe-column>
+                </vxe-table>
+              </t-collapse-panel>
+            </t-collapse>
+          </div>
+        </t-skeleton>
       </div>
     </t-card>
   </div>
@@ -93,7 +112,11 @@ export default {
 }
 </script>
 <script lang="ts" setup>
-import { teacherGetHomeworkDetail, teacherUpdateStudentGrade } from '@/apis/homework/teacherHomework'
+import {
+  teacherGetHomeworkDetail,
+  teacherUpdateStudentGrade,
+  getStuRateEachInfo,
+} from '@/apis/homework/teacherHomework'
 import { stuGetHomeworkFileUrl } from '@/apis/homework/studentHomework'
 import { onMounted, ref } from 'vue'
 import { formatTime, GMTToStr } from '@/utils/format'
@@ -113,6 +136,8 @@ const homeworkDetail = ref({})
 const loadingControl = ref(false)
 const grade = ref(undefined)
 const submitBtnLoading = ref(false)
+const rateEachLoadingControl = ref(false)
+const rateEachList = ref([])
 
 const submitGrade = async function () {
   submitBtnLoading.value = true
@@ -163,8 +188,20 @@ const downloadHomework = function (row) {
   stuGetHomeworkFileUrl(row.id)
 }
 
+const getRateEachList = function () {
+  getStuRateEachInfo(props.homeworkId)
+    .then((resp) => {
+      // @ts-ignore
+      rateEachList.value = resp.data.data
+    })
+    .catch(() => {
+      MessagePlugin.error('获取学生互评信息错误')
+    })
+}
+
 onMounted(() => {
   getDataStudentHomeworkDetail(props.homeworkId)
+  getRateEachList()
 })
 </script>
 

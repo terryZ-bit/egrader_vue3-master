@@ -53,4 +53,10 @@ export default [
     component: () => import('@/pages/homework/TeacherScoreHomework.vue'),
     props: true,
   },
+  {
+    path: 'teacherWatchReliability/:teacherHomeworkId',
+    name: 'teacherWatchReliability',
+    component: () => import('@/pages/homework/TeacherWatchReliability.vue'),
+    props: true,
+  },
 ]

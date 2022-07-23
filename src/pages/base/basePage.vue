@@ -18,12 +18,10 @@
       <t-card bordered header-bordered :shadow="true" class="base-page-card">
         <div style="height: 160px; width: 250px">
           <doughnut-rounded
+            v-if="loadEndFlag"
             :info="{
               title: '作业完成情况',
-              data: [
-                { value: 200, name: '已完成' },
-                { value: 10, name: '未完成' },
-              ],
+              data: homeworkFinish,
               id: '1',
             }"
           ></doughnut-rounded>
@@ -32,13 +30,10 @@
       <t-card bordered header-bordered :shadow="true" class="base-page-card">
         <div style="height: 160px; width: 250px">
           <doughnut-rounded
+            v-if="loadEndFlag"
             :info="{
               title: '作业分数分布',
-              data: [
-                { value: 200, name: '优秀' },
-                { value: 120, name: '良好' },
-                { value: 30, name: '较差' },
-              ],
+              data: homeworkDistribution,
             }"
           ></doughnut-rounded>
         </div>
@@ -48,9 +43,10 @@
       <t-card bordered header-bordered :shadow="true" class="long-page-card">
         <div style="height: 160px; width: 900px">
           <simple-category
+            v-if="loadEndFlag"
             :info="{
               title: '本周课程活跃度',
-              data: [300, 200, 134, 245, 40, 10, 560],
+              data: activeStatus,
             }"
           ></simple-category>
         </div>
@@ -70,8 +66,8 @@
           >
             <vxe-column type="seq" width="60"></vxe-column>
             <vxe-column field="student_name" title="学生姓名"></vxe-column>
-            <vxe-column field="student_num" title="学生学号" sortable></vxe-column>
-            <vxe-column field="student_mix_grade" title="学生总成绩" sortable></vxe-column>
+            <vxe-column field="student_number" title="学生学号" sortable></vxe-column>
+            <vxe-column field="grade_sum" title="学生总成绩" sortable></vxe-column>
           </vxe-table>
         </div>
       </t-card>
@@ -91,17 +87,24 @@ import { onMounted, ref } from 'vue'
 import TeacherSetupBase from '@/pages/base/components/teacherSetupBase.vue'
 import DoughnutRounded from '@/components/echarts/DoughnutRounded.vue'
 import SimpleCategory from '@/components/echarts/SimpleCategory.vue'
+import { getHomeworkAnalyse, getStudentManifestation } from '@/apis/board'
+import { MessagePlugin } from 'tdesign-vue-next'
 const chooseStore = useChooseStore()
 // eslint-disable-next-line no-unused-vars
 const { chooseCourse, chooseClass, chooseRole } = storeToRefs(chooseStore)
 const hoursTip = ref('')
-const studentGradeData = ref([
-  { student_name: '郑才睿', student_num: 60, student_mix_grade: 454 },
-  { student_name: '黄川', student_num: 160, student_mix_grade: 580 },
-  { student_name: '沈朗', student_num: 260, student_mix_grade: 389 },
-  { student_name: '余成', student_num: 360, student_mix_grade: 432 },
-  { student_name: '梁铭明', student_num: 460, student_mix_grade: 225 },
+const studentGradeData = ref([])
+const homeworkFinish = ref([
+  { value: 200, name: '已完成' },
+  { value: 10, name: '未完成' },
 ])
+const homeworkDistribution = ref([
+  { value: 200, name: '优秀' },
+  { value: 120, name: '良好' },
+  { value: 30, name: '较差' },
+])
+const loadEndFlag = ref(false)
+const activeStatus = ref([300, 200, 134, 245, 40])
 const getHoursTip = function () {
   const date = new Date()
   if (date.getHours() >= 0 && date.getHours() < 12) {
@@ -112,9 +115,49 @@ const getHoursTip = function () {
     hoursTip.value = '晚上好'
   }
 }
+const getHomework = function () {
+  loadEndFlag.value = false
+  getHomeworkAnalyse(chooseCourse.value.id)
+    .then((rsp) => {
+      // @ts-ignore
+      const data = rsp.data.data
+      homeworkFinish.value.forEach((item, index, array) => {
+        if (item.name === '已完成') {
+          array[index].value = data.finish_count
+        } else if (item.name === '未完成') {
+          array[index].value = data.unfinished_count
+        }
+      })
+      homeworkDistribution.value.forEach((item, index, array) => {
+        if (item.name === '优秀') {
+          array[index].value = data.perfect_count
+        } else if (item.name === '良好') {
+          array[index].value = data.common_count
+        } else if (item.name === '较差') {
+          array[index].value = data.bad_count
+        }
+      })
+      activeStatus.value = data.active_status
+    })
+    .catch(() => {
+      MessagePlugin.error('获取展示信息失败!')
+    })
+    .finally(() => {
+      loadEndFlag.value = true
+    })
+}
+
+const getManifestation = function () {
+  getStudentManifestation(chooseCourse.value.id).then((rsp) => {
+    // @ts-ignore
+    studentGradeData.value = rsp.data.data
+  })
+}
 
 onMounted(() => {
   getHoursTip()
+  getHomework()
+  getManifestation()
 })
 </script>
 

@@ -42,6 +42,7 @@ const cancalDebounce = debounce(resizeHandler, 500)
 // 页面成功渲染，开始绘制图表
 onMounted(() => {
   // 配置为 svg 形式，预防页面缩放而出现模糊问题；图表过于复杂时建议使用 Canvas
+  // @ts-ignore
   myChart = echarts.init(chartDom.value, null, { renderer: 'svg' })
   // myChart = echarts.init(chartDom.value)
   myChart.setOption(props.option, true)

@@ -198,3 +198,42 @@ export function confirmTeacherHomework(teacherHomeworkId, endTime, rateEndTime, 
         },
       })
 }
+
+/**
+ * 获取某份作业被评价情况
+ * @param homeworkId
+ */
+export function getStuRateEachInfo(homeworkId) {
+  return request({
+    url: 'egraderBackend.LATEST/homeworkService/getStuRateEachInfo',
+    method: 'POST',
+    data: {
+      homework_id: homeworkId,
+    },
+  })
+}
+
+/**
+ * 获取某次作业学生整体互评情况
+ * @param teacherHomeworkId
+ */
+export function getStuRateEachReal(teacherHomeworkId) {
+  return request({
+    url: 'egraderBackend.LATEST/homeworkService/getStuRateEachReal',
+    method: 'POST',
+    data: {
+      teacher_homework_id: teacherHomeworkId,
+    },
+  })
+}
+
+export function setFinalGrade(teacherHomeworkId, chooseFlag) {
+  return request({
+    url: 'egraderBackend.LATEST/homeworkService/setFinalGrade',
+    method: 'POST',
+    data: {
+      teacher_homework_id: teacherHomeworkId,
+      choose_flag: chooseFlag,
+    },
+  })
+}

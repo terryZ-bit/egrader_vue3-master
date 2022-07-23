@@ -4,6 +4,26 @@
       <t-tabs v-model="headerMenuHomeworkSelect" theme="card" @change="handlerTabChange">
         <template v-for="item in teacherHomeworkList" :key="item.id">
           <t-tab-panel :value="item.id" :label="item.name">
+            <t-dialog
+              v-model:visible="dialogVisible"
+              header="一键赋分"
+              :on-cancel="
+                () => {
+                  dialogVisible = false
+                }
+              "
+              :on-confirm="handlerDialogConfirm"
+              :confirm-btn="{
+                content: '确定',
+                theme: 'primary',
+                loading: dialogLoading,
+              }"
+            >
+              <t-radio-group variant="default-filled" default-value="1" @change="handlerRadioChange">
+                <t-radio-button value="1">赋分为可信互评成绩</t-radio-button>
+                <t-radio-button value="2">赋分为互评平均分</t-radio-button>
+              </t-radio-group>
+            </t-dialog>
             <t-skeleton :loading="skeletonLoading">
               <div v-if="item.end_flag !== 0" style="display: flex; flex-direction: column">
                 <div style="display: flow">
@@ -30,8 +50,18 @@
                       @click="exportDataEvent"
                       >导出成绩</t-button
                     >
+                    <t-button
+                      theme="primary"
+                      variant="dashed"
+                      size="small"
+                      :disabled="item.end_flag !== 3"
+                      @click="dialogVisibleHandler"
+                      >一键打分</t-button
+                    >
                   </div>
                 </div>
+                <t-divider></t-divider>
+                <p style="float: left; margin-right: auto; padding-left: 30px; font-size: medium">学生作业完成情况</p>
                 <vxe-table
                   ref="xTable1"
                   style="margin-left: 30px; margin-top: 10px"
@@ -56,11 +86,17 @@
                   <vxe-column field="update_time" title="提交时间" :formatter="formatTime" sortable></vxe-column>
                   <vxe-column
                     field="rate_each_grade"
-                    title="互评成绩"
+                    title="互评成绩(可信度算法)"
                     :formatter="formatNullToCh"
                     sortable
                   ></vxe-column>
-                  <vxe-column field="homework_grade" title="成绩" :formatter="formatNullToCh" sortable></vxe-column>
+                  <vxe-column
+                    field="rate_each_ave_grade"
+                    title="互评成绩(平均分)"
+                    :formatter="formatNullToCh"
+                    sortable
+                  ></vxe-column>
+                  <vxe-column field="homework_grade" title="最终成绩" :formatter="formatNullToCh" sortable></vxe-column>
                   <vxe-column title="操作" width="160px">
                     <template #default="{ row }">
                       <div v-if="row.finish_status === '已完成'">
@@ -71,6 +107,22 @@
                       </div>
                     </template>
                   </vxe-column>
+                </vxe-table>
+                <t-divider></t-divider>
+                <p style="float: left; margin-right: auto; padding-left: 30px; font-size: medium">学生互评可信度</p>
+                <vxe-table
+                  style="margin-left: 30px; margin-top: 10px"
+                  border
+                  :data="stuRateReal"
+                  :loading="stuRateEachRealLoading"
+                  :edit-config="{ trigger: 'manual', mode: 'row' }"
+                  :export-config="{}"
+                >
+                  <vxe-column type="seq" width="60"></vxe-column>
+                  <vxe-column field="student_number" title="学生学号" sortable></vxe-column>
+                  <vxe-column field="student_name" title="学生姓名"></vxe-column>
+                  <vxe-column field="reliability" title="本次互评可信度" sortable></vxe-column>
+                  <vxe-column field="student_rate_count" title="评价份数" sortable></vxe-column>
                 </vxe-table>
               </div>
               <!--  以下开始为未发布作业处理部分    -->
@@ -125,7 +177,13 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
 import router from '@/router'
-import { confirmTeacherHomework, listTeacherHomework, teacherGetAllHomework } from '@/apis/homework/teacherHomework'
+import {
+  confirmTeacherHomework,
+  listTeacherHomework,
+  teacherGetAllHomework,
+  getStuRateEachReal,
+  setFinalGrade,
+} from '@/apis/homework/teacherHomework'
 import { useChooseStore, useTeacherHomeworkStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { formatNullToCh, formatTime, GMTToStr } from '@/utils/format'
@@ -156,6 +214,19 @@ const endTimeFFlag = ref(false)
 const rateTimeFFlag = ref(false)
 const submitConfirmDisable = ref(true)
 const rateEachNum = ref(2)
+const stuRateReal = ref([])
+const stuRateEachRealLoading = ref(false)
+const dialogVisible = ref(false)
+const setGradeCheckBox = ref(1)
+const dialogLoading = ref(false)
+// const tableTitleData = ref([
+//   { label: '学号', prop: 'student_number' },
+//   { label: '姓名', prop: 'student_name' },
+//   { label: '提交时间', prop: 'update_time' },
+//   { label: '互评成绩（可信度算法）', prop: 'rate_each_grade' },
+//   { label: '互评成绩（平均分）', prop: 'rate_each_ave_grade' },
+//   { label: '成绩', prop: 'homework_grade' },
+// ])
 const getTeacherHomeworkList = async function () {
   skeletonLoading.value = true
   await listTeacherHomework(chooseCourse.value.id, chooseRole.value.roleId)
@@ -226,15 +297,16 @@ const handlerTabChange = function () {
       data_.forEach((item) => {
         item.finish_status = item.finish_status === 0 ? '未完成' : '已完成'
         item.update_time = GMTToStr(item.update_time)
-        if (item.rate_each_grade != null) {
-          item.rate_each_grade = item.rate_each_grade.toFixed(2)
-        }
         if (item.homework_grade != null) {
           item.homework_grade = parseFloat(item.homework_grade)
           item.homework_grade = item.homework_grade.toFixed(2)
         }
         teacherHomeworkToAllHomework.value.push(item)
       })
+      // @ts-ignore
+      if (teacherHomeworkToAllHomework.value[0].rate_each_grade != null) {
+        getStuReal(headerMenuHomeworkSelect.value)
+      }
     })
     .finally(() => {
       AllHomeworkTableLoading.value = false
@@ -279,6 +351,41 @@ const submitConfirmPublicHomework = async function (item) {
       await getTeacherHomeworkList()
       await handlerTabChange()
     })
+}
+
+const getStuReal = function (teacherHomeworkId) {
+  getStuRateEachReal(teacherHomeworkId)
+    .then((resp) => {
+      // @ts-ignore
+      stuRateReal.value = resp.data.data
+    })
+    .catch(() => {
+      MessagePlugin.error('获取互评可信度失败')
+    })
+}
+
+const handlerDialogConfirm = async function () {
+  dialogLoading.value = true
+  await setFinalGrade(headerMenuHomeworkSelect.value, setGradeCheckBox.value)
+    .then(() => {
+      MessagePlugin.success('赋分成功!')
+    })
+    .catch(() => {
+      MessagePlugin.success('赋分失败！')
+    })
+    .finally(async () => {
+      dialogVisible.value = false
+      dialogLoading.value = false
+      await handlerTabChange()
+    })
+}
+
+const dialogVisibleHandler = function () {
+  dialogVisible.value = true
+}
+
+const handlerRadioChange = function (changeVal) {
+  setGradeCheckBox.value = changeVal
 }
 
 const pushToTeacherHomeworkDetail = function (teacherHomeworkId) {

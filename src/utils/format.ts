@@ -13,12 +13,18 @@ export const formatYesOrNo: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
   return item ? item.label : ''
 }
 export const formatTime: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
-  return cellValue === '暂无' ? '暂无' : XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:ss')
+  return cellValue === '暂无' ? '暂无' : XEUtils.toDateString(cellValue, 'yyyy-MM-dd HH:mm:ss')
 }
 
 export const formatNullToCh: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
+  const digits = 2
   const item = typeNullList.find((item) => item.value === cellValue)
-  return item ? item.label : cellValue
+  return item ? item.label : XEUtils.toFixed(XEUtils.floor(cellValue, digits), digits)
+}
+
+export const formatFixedNumber: VxeColumnPropTypes.Formatter = ({ cellValue }) => {
+  const digits = 2
+  return XEUtils.toFixed(XEUtils.floor(cellValue, digits), digits)
 }
 
 export const GMTToStr = function (time) {
