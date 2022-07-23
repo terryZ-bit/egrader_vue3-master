@@ -58,7 +58,15 @@
               </div>
             </t-col>
           </t-row>
-          <div v-for="(item, index) in homeworkInfo.score_detail_list" :key="item.id">
+
+          <t-input-number
+            v-if="homeworkInfo.score_detail_flag === 0"
+            v-model="finalScore"
+            :min="0"
+            :max="50"
+            style="margin-left: 100px"
+          ></t-input-number>
+          <div v-for="(item, index) in homeworkInfo.score_detail_list" v-else :key="item.id">
             <t-form label-align="left" style="margin-left: 20px">
               <t-form-item label="得分点">
                 <t-tag>第{{ index + 1 }}题得分</t-tag>
@@ -66,7 +74,7 @@
               <t-form-item label="评分标准">{{ item.question_name }}</t-form-item>
               <t-form-item label="分数上限">{{ item.score_max }}</t-form-item>
               <t-form-item label="打分">
-                <t-input-number v-model="senDetail[index].score" :max="item.score_max"></t-input-number>
+                <t-input-number v-model="senDetail[index].score" :min="0" :max="item.score_max"></t-input-number>
               </t-form-item>
             </t-form>
             <t-divider></t-divider>
@@ -110,7 +118,7 @@ const fileList = ref([])
 const senDetail = ref([])
 const homeworkMessage = ref('')
 const homeworkInfo = ref({})
-
+const finalScore = ref('')
 // eslint-disable-next-line no-unused-vars
 const { rateDetailJson } = storeToRefs(rateEachStore)
 const downloadTHomeworkFile = function (row) {
@@ -129,7 +137,7 @@ const submitDetail = function () {
     })
   }
   console.log(list)
-  uploadEach(list)
+  uploadEach(list, finalScore.value, props.rateParam, homeworkInfo.value.score_detail_flag)
     .then((resp) => {
       console.log('upload success!')
     })

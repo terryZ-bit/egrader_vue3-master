@@ -256,6 +256,7 @@ const filesUpload = async (file) => {
     .put(fileInfo.oss_path, file.raw)
     .then(async () => {
       await console.log('开始上传文件')
+      getHomeworkInfo_()
       uploadFlag = true
     })
     .catch(async (err) => {
@@ -285,11 +286,13 @@ const downloadTchomeworkFile = function (row) {
 }
 
 const submitHomework = function () {
+  homeworkInfo.value = []
   // @ts-ignore
   stuPushHomework(chooseRole.value.roleId, homeworkInfo.value.student_homework_id, homeworkMessage.value).finally(
     () => {
       getHomeworkInfo_()
       files_.value = []
+      MessagePlugin.success('更新成功')
     },
   )
 }

@@ -185,6 +185,7 @@ const downloadTHomeworkFile = function (row) {
   getTeacherHomeworkFile(row.id)
 }
 const getHomeworkInfo_ = function () {
+  homeworkInfo.value = {}
   stuHomeworkDetailLoading.value = true
   // @ts-ignore
   getHomeworkInfo(chooseRole.value.roleId, chooseClass.value.class_id, props.rateParam)
@@ -192,10 +193,6 @@ const getHomeworkInfo_ = function () {
       console.log(resp)
       // @ts-ignore
       homeworkInfo.value = resp.data.data
-      // @ts-ignore
-      // if (homeworkInfo.value) {
-      //
-      // }
     })
     .finally(() => {
       stuHomeworkDetailLoading.value = false
