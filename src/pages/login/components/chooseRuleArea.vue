@@ -220,18 +220,18 @@ watch(
   () => studentList.value,
   (newVal) => {
     console.log('watch studentList')
-    if (newVal === undefined) {
-      MessagePlugin.info('还没有默认教师角色！')
-    }
+    // if (newVal === undefined) {
+    //   MessagePlugin.info('还没有默认教师角色！')
+    // }
   },
 )
 watch(
   () => studentList.value,
   (newVal) => {
     console.log('watch studentList')
-    if (newVal === undefined) {
-      MessagePlugin.info('还没有默认学生角色！')
-    }
+    // if (newVal === undefined) {
+    //   MessagePlugin.info('还没有默认学生角色！')
+    // }
   },
 )
 const onInsertCourse = async function () {
@@ -315,7 +315,7 @@ const roleLogin = async function (course) {
     chooseStore.setChooseRole(teacherId, 'teacher', Name)
     console.log(course.id)
     await chooseStore.flushChooseClass()
-    await router.push({ name: 'teacherCourse' })
+    await router.push({ name: 'basePage' })
     // eslint-disable-next-line no-prototype-builtins
   } else if (course.hasOwnProperty('student_id')) {
     console.log('学生登录')

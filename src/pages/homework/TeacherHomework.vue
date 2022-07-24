@@ -306,6 +306,8 @@ const handlerTabChange = function () {
       // @ts-ignore
       if (teacherHomeworkToAllHomework.value[0].rate_each_grade != null) {
         getStuReal(headerMenuHomeworkSelect.value)
+      } else {
+        stuRateReal.value = []
       }
     })
     .finally(() => {

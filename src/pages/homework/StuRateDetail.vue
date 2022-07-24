@@ -95,7 +95,7 @@ export default {
 import { useRateEachStore, useChooseStore } from '@/store'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
-import { getTeacherHomeworkFile } from '@/apis/homework/teacherHomework'
+import { getStuHomeworkFile } from '@/apis/homework/teacherHomework'
 import router from '@/router'
 import { getHomeworkInfo } from '@/apis/homework/studentHomework'
 import { uploadEach } from '@/apis/mutual_operation/studentEach'
@@ -122,7 +122,7 @@ const finalScore = ref('')
 // eslint-disable-next-line no-unused-vars
 const { rateDetailJson } = storeToRefs(rateEachStore)
 const downloadTHomeworkFile = function (row) {
-  getTeacherHomeworkFile(row.id)
+  getStuHomeworkFile(row.id)
 }
 const submitDetail = function () {
   console.log(rateDetailJson.value[props.rateParam])
@@ -137,6 +137,7 @@ const submitDetail = function () {
     })
   }
   console.log(list)
+  // @ts-ignore
   uploadEach(list, finalScore.value, props.rateParam, homeworkInfo.value.score_detail_flag)
     .then((resp) => {
       console.log('upload success!')

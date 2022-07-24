@@ -286,7 +286,6 @@ const downloadTchomeworkFile = function (row) {
 }
 
 const submitHomework = function () {
-  homeworkInfo.value = []
   // @ts-ignore
   stuPushHomework(chooseRole.value.roleId, homeworkInfo.value.student_homework_id, homeworkMessage.value).finally(
     () => {

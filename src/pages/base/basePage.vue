@@ -10,7 +10,7 @@
               您目前查看的课程：{{ chooseCourse.course_name }}
             </div>
             <div style="font-size: medium; text-align: left; margin-top: 25px">
-              课程人数:<span style="color: #012b9d; font-weight: bold">&nbsp; 60人</span>
+              课程人数:<span style="color: #012b9d; font-weight: bold">&nbsp; 10人</span>
             </div>
           </div>
         </div>

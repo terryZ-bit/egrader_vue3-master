@@ -32,6 +32,7 @@ export const GMTToStr = function (time) {
   if (time === null) {
     return '暂无'
   }
+  date.setHours(date.getHours() - 8)
   return (
     date.getFullYear() +
     '-' +
