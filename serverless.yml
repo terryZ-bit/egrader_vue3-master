@@ -1,0 +1,11 @@
+component: website
+name: egrader3
+app: egrader-feasfmks3
+
+inputs:
+  src:
+    src: ./src
+    hook: npm run build
+    dist: ./dist
+  bucketName: egrader3
+  protocol: https
